@@ -1,7 +1,7 @@
 
 // ChildView.h : interface of the CChildView class
 //
-
+// test
 
 #pragma once
 #include "graphics/OpenGLWnd.h"
