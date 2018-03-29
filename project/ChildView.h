@@ -1,12 +1,13 @@
 
 // ChildView.h : interface of the CChildView class
 //
-// test
 
 #pragma once
 #include "graphics/OpenGLWnd.h"
 #include "graphics/GrCamera.h"
 #include "Torus.h"
+#include "TorusStraight.h"
+
 // CChildView window
 
 class CChildView : public COpenGLWnd
@@ -46,6 +47,11 @@ private:
 	int camNum = 0;
 	CGrCamera m_camera;
 	CTorus m_tori;
+
+	CTorusStraight m_straightTrack1;
+	CTorusStraight m_straightTrack2;
+	CTorusStraight m_straightTrack3;
+
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);

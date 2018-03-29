@@ -7,6 +7,7 @@
 #include "ChildView.h"
 #include "graphics/GrCamera.h"
 #include "Torus.h"
+#include "TorusStraight.h"
 
 // CChildView
 
@@ -89,13 +90,25 @@ void CChildView::OnGLDraw(CDC* pDC)
 
 	glPushMatrix();
 	glRotated(180, 1, 0, 0);
-	glRotated(0, 0, 1, 0);
+	glRotated(180, 0, 1, 0);
 	glRotated(0, 0, 0, 1);
 	glTranslated(2, -7, 6);
 	m_tori.Draw();
 	glPopMatrix();
 
 	SlideBase(10., 5., 4., RED, 0., 0., 1.);
+
+	// Straight track 1
+	glPushMatrix();
+	glRotated(180, 1, 0, 0);
+	glRotated(180, 0, 1, 0);
+	glRotated(0, 0, 0, 1);
+	glTranslated(0, 0, 0);
+	m_straightTrack1.Draw();
+	glPopMatrix();
+	// Straight track 2
+
+	// Straight track 3
 
 
 }
