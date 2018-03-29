@@ -3,7 +3,7 @@
 //#include "graphics\GrTexture.h"
 
 //! This class allows you to draw a torus
-
+ 
 class CTorus
 {
 public:
