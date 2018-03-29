@@ -19,7 +19,7 @@ CTorus::CTorus(void)
 
     // Small radius of the torus
     // This is the radius of a cross section of the torus
-    m_r2 = 1;
+    m_r2 = 1.5;
 
     // Number of steps in the large radius
     m_steps1 = 50;

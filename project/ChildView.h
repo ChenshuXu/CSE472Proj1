@@ -52,6 +52,8 @@ private:
 	CTorusStraight m_straightTrack2;
 	CTorusStraight m_straightTrack3;
 
+	CTorus m_trackCurve1;
+	CTorus m_trackCurve2;
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);

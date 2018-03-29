@@ -13,7 +13,7 @@
 
 CChildView::CChildView()
 {
-	m_camera.Set(20, 10, 50, 0, 0, 0, 0, 1, 0);
+	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
 }
 
 CChildView::~CChildView()
@@ -86,17 +86,23 @@ void CChildView::OnGLDraw(CDC* pDC)
 	// 
 	// INSERT DRAWING CODE HERE
 	//
-	const double RED[] = { 1, 1, 1 };
+	
+
+	glPushMatrix();
+	glRotated(180, 1, 0, 0);
+	glRotated(0, 0, 1, 0);
+	glRotated(14, 0, 0, 1);
+	glTranslated(15, -11.4, -20);
+	m_trackCurve1.Draw();
+	glPopMatrix();
 
 	glPushMatrix();
 	glRotated(180, 1, 0, 0);
 	glRotated(180, 0, 1, 0);
-	glRotated(0, 0, 0, 1);
-	glTranslated(2, -7, 6);
-	m_tori.Draw();
+	glRotated(-14, 0, 0, 1);
+	glTranslated(-25, -11.4, 10);
+	m_trackCurve2.Draw();
 	glPopMatrix();
-
-	SlideBase(10., 5., 4., RED, 0., 0., 1.);
 
 	// Straight track 1
 	glPushMatrix();
@@ -111,6 +117,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 	// Straight track 3
 
 
+	SlideBase(40., 10., 30., RED, 0., 0., 1.);
 }
 
 //
@@ -151,7 +158,7 @@ void CChildView::SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdou
 	glColor3d(p_color[0], p_color[1], p_color[2]);
 	Tria(a, b, d); // Front
 
-	glColor3d(p_color[0] * 0, p_color[1] * 0.95, p_color[2] * 0.95);
+	glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
 	Quad(b, f, h, d); // Top
 
 	glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
@@ -169,7 +176,7 @@ void CChildView::OnCameraFreecamera()
 {
 	// TODO: Add your command handler code here
 	camNum = 0;
-	m_camera.Set(20, 10, 50, 0, 0, 0, 0, 1, 0);
+	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
 	Invalidate();
 }
 
