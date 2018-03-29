@@ -72,6 +72,7 @@ void CTorus::Draw()
             double n[3], v[3];
 
             glBegin(GL_QUADS);
+			// inner side
             TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
             glNormal3dv(n);
 			glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
@@ -92,6 +93,29 @@ void CTorus::Draw()
 			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
             glVertex3dv(v);
 
+			// outer side
+			TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
+			glVertex3dv(v);
+
+			TorusVertex(a1a, m_r1, a2b, m_r2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
+			glVertex3dv(v);
+			
+
+			TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
+			glVertex3dv(v);
+
+			
+
+			TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
+			glVertex3dv(v);
             glEnd();
         }
 
