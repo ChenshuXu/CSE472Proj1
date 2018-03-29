@@ -45,7 +45,8 @@ public:
 private:
 	int camNum = 0;
 	CGrCamera m_camera;
-	CTorus m_tori;
+	CTorus m_trackCurve1;
+	CTorus m_trackCurve2;
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
