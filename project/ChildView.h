@@ -37,6 +37,7 @@ public:
 	void OnGLDraw(CDC* pDC);
 	void SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
 	void drw_straightTrack();
+	void drw_carBody(int n, int arg, float mult, float v);
 	afx_msg void OnCameraFreecamera();
 	afx_msg void OnCameraAerialcamera();
 	afx_msg void OnCameraCamera1();
@@ -56,9 +57,10 @@ private:
 
 	CTorus m_trackCurve1;
 	CTorus m_trackCurve2;
-
-
-	
+public:
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 
 
 };
