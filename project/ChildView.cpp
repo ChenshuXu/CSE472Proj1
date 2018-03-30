@@ -8,6 +8,10 @@
 #include "graphics/GrCamera.h"
 #include "Torus.h"
 #include "TorusStraight.h"
+#include "math.h"
+#include <cmath>
+
+const double GR_PI = 3.1415926535897932384626433832795;
 
 // CChildView
 
@@ -105,19 +109,15 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glPopMatrix();
 
 	// Straight track 1
-	glPushMatrix();
-	glRotated(180, 1, 0, 0);
-	glRotated(180, 0, 1, 0);
-	glRotated(0, 0, 0, 1);
-	glTranslated(0, 0, 0);
-	m_straightTrack1.Draw();
-	glPopMatrix();
+	drw_straightTrack();
+	
 	// Straight track 2
 
 	// Straight track 3
 
-
+	const double RED[] = { 1, 1, 1 };
 	SlideBase(40., 10., 30., RED, 0., 0., 1.);
+
 }
 
 //
@@ -169,6 +169,47 @@ void CChildView::SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdou
 
 	glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
 	Quad(a, e, f, b); // Bottom
+}
+
+void CChildView::drw_straightTrack() {
+	/*
+	Function drw_polygon:
+	Arguments:
+	n - number of sides
+	arg - starting angle (not so important at all)
+	mult - multiplying sides to incrase their length
+	v - cylinder height
+	*/
+	int n = 50;
+	float r = 1.5; // radius of inner half circle
+	int numSteps = 20; // number of steps
+	int arg = 180; // start angle
+	float mult = 1;
+	float v = 10.0;
+	float length = 10.0; // Length of track
+
+	const double step2r = 2. * GR_PI / numSteps /2;
+
+	double previous_x = 0;
+	double previous_y = 0;
+
+	
+	for (int i = arg; i < arg + 180; i += (360 / n)) {
+		float a = i * GR_PI / 180; // degrees to radians
+		
+		glBegin(GL_QUADS);
+		glVertex3f(previous_x, previous_y, 0.0);
+		glVertex3f(previous_x, previous_y, v);
+		glVertex3f(mult * cos(a), mult * sin(a), v);
+		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
+		
+
+		previous_x = mult * cos(a);
+		previous_y = mult * sin(a);
+		glEnd();
+	}
+	
+
 }
 
 

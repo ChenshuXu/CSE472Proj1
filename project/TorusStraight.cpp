@@ -13,15 +13,16 @@ CTorusStraight::CTorusStraight(void)
     // Default values
     //
 
-    // Large radius of the torus
-    // This is the radius of the entire torus
-    m_r1 = 5;
+	m_r1 = 50;
+
+	// Length of the torus
+	m_length = 10;
 
     // Small radius of the torus
     // This is the radius of a cross section of the torus
     m_r2 = 1;
 
-    // Number of steps in the large radius
+    // Number of steps in the track
     m_steps1 = 50;
 
     // Number of steps in the small radius
@@ -50,76 +51,72 @@ void CTorusStraight::Draw()
 	//	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	//	glBindTexture(GL_TEXTURE_2D, m_texture->TexName());
 	//}
-    // How large are the angular steps in radians
-    const double step1r = 2. * GR_PI / m_steps1;
-    const double step2r = 2. * GR_PI / m_steps2;
+	// How large are the angular steps in radians
+	const double step1r = 2. * GR_PI / m_steps1;
+	const double step2r = 2. * GR_PI / m_steps2;
 
-    // We build the torus in slices that go from a1a to a1b
-    double a1a = 0;
-    double a1b = step1r;
+	// We build the torus in slices that go from a1a to a1b
+	double a1a = 0;
+	double a1b = step1r;
 
-    for(int s = 0;  s < m_steps1 / 4;  s++, a1a = a1b, a1b += step1r)
-    {
-        // We build a slice out of quadrilaterals that range from 
-        // angles a2a to a2b.
 
-        double a2a = 0;
-        double a2b = step2r;
+	double a2a = 0;
+	double a2b = step2r;
 
-        for(int s2 = 0;  s2 < 2 * m_steps2 / 4;  s2++, a2a = a2b,  a2b += step2r)
-        {
-            // We need to know the corners
-            double n[3], v[3];
+	for (int s2 = 0; s2 < 2 * m_steps2 / 4; s2++, a2a = a2b, a2b += step2r)
+	{
+		// We need to know the corners
+		double n[3], v[3];
 
-            glBegin(GL_QUADS);
-			// inner side
-            TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
-            glNormal3dv(n);
-			glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
-            glVertex3dv(v);
+		glBegin(GL_QUADS);
+		// inner side
+		TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
+		glVertex3dv(v);
 
-            TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
-            glNormal3dv(n);
-			glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
-            glVertex3dv(v);
+		TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
+		glVertex3dv(v);
 
-            TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
-            glNormal3dv(n);
-			glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
-            glVertex3dv(v);
+		TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
+		glVertex3dv(v);
 
-            TorusVertex(a1a, m_r1, a2b, m_r2, v, n);
-            glNormal3dv(n);
-			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
-            glVertex3dv(v);
+		TorusVertex(a1a, m_r1, a2b, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
+		glVertex3dv(v);
 
-			// outer side...
-			TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
-			glNormal3dv(n);
-			glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
-			glVertex3dv(v);
+		// outer side...
+		TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
+		glVertex3dv(v);
 
-			TorusVertex(a1a, m_r1, a2b, m_r2, v, n);
-			glNormal3dv(n);
-			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
-			glVertex3dv(v);
-			
+		TorusVertex(a1a, m_r1, a2b, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
+		glVertex3dv(v);
 
-			TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
-			glNormal3dv(n);
-			glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
-			glVertex3dv(v);
 
-			
+		TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
+		glVertex3dv(v);
 
-			TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
-			glNormal3dv(n);
-			glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
-			glVertex3dv(v);
-            glEnd();
-        }
 
-    }
+
+		TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
+		glNormal3dv(n);
+		glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
+		glVertex3dv(v);
+		glEnd();
+	}
+
+	
 	//if (m_texture != NULL)
 	//{
 	//	glDisable(GL_TEXTURE_2D);

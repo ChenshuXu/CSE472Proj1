@@ -36,13 +36,15 @@ protected:
 public:
 	void OnGLDraw(CDC* pDC);
 	void SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
-	void Box(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color);
+	void drw_straightTrack();
 	afx_msg void OnCameraFreecamera();
 	afx_msg void OnCameraAerialcamera();
 	afx_msg void OnCameraCamera1();
 	afx_msg void OnCameraCamera2();
 	afx_msg void OnCameraBobsledcamera();
-	
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 private:
 	int camNum = 0;
 	CGrCamera m_camera;
@@ -54,10 +56,9 @@ private:
 
 	CTorus m_trackCurve1;
 	CTorus m_trackCurve2;
-public:
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+
+
+	
 
 
 };

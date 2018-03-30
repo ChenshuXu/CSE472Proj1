@@ -68,5 +68,8 @@ private:
     double  m_steps2;
 
 	//CGrTexture *m_texture = NULL;
+
+	// Length of track
+	double m_length;
 };
 
