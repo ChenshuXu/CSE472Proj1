@@ -212,11 +212,11 @@ void CChildView::drw_straightTrack() {
 		glVertex3f(previous_x, previous_y, v);
 		glVertex3f(mult * cos(a), mult * sin(a), v);
 		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
-		
+		glEnd();
 
 		previous_x = mult * cos(a);
 		previous_y = mult * sin(a);
-		glEnd();
+		
 	}
 	
 
