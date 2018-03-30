@@ -11,6 +11,8 @@
 
 // CChildView
 
+const double M_PI = 3.1415926535897932384626433832795;
+
 CChildView::CChildView()
 {
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
@@ -116,8 +118,17 @@ void CChildView::OnGLDraw(CDC* pDC)
 
 	// Straight track 3
 
+	// car body
+	glPushMatrix();
+	glRotated(90, 0, 1, 0);
+	glRotated(14, 1, 0, 0);
+	glTranslated(-10, 11, 0);
+	drw_carBody(360, 0, 1, 4.5);
+	glPopMatrix();
 
-	SlideBase(40., 10., 30., RED, 0., 0., 1.);
+	const double WHITE[] = { 1, 1, 1 };
+
+	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
 }
 
 //
@@ -241,4 +252,47 @@ void CChildView::OnRButtonDown(UINT nFlags, CPoint point)
 	}
 
 	COpenGLWnd::OnRButtonDown(nFlags, point);
+}
+
+void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1.0) {
+	/*
+	Function drw_polygon:
+	Arguments:
+	n - number of sides
+	arg - starting angle (not so important at all)
+	mult - multiplying sides to incrase their length
+	v - cylinder height
+	*/
+
+	// DumbProof Double Check :)
+	if (arg < 0)
+		arg = 0;
+
+	// Cylinder Bottom
+	glBegin(GL_POLYGON);
+	glColor4f(1.0, 0.0, 0.0, 1.0);
+	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
+		float a = i * M_PI / 180; // degrees to radians
+		glVertex3f(  mult * sin(a), mult * cos(a), 0.0);
+	}
+	glEnd();
+
+	// Cylinder Top
+	glBegin(GL_POLYGON);
+	glColor4f(0.0, 0.0, 1.0, 1.0);
+	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
+		float a = i * M_PI / 180; // degrees to radians
+		glVertex3f( mult * cos(a), mult * sin(a), v);
+	}
+	glEnd();
+
+	// Cylinder "Cover"
+	glBegin(GL_QUAD_STRIP);
+	glColor4f(1.0, 1.0, 0.0, 1.0);
+	for (int i = arg; i < 480; i += (360 / n)) {
+		float a = i * M_PI / 180; // degrees to radians
+		glVertex3f(mult * cos(a), mult * sin(a), v);
+		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
+	}
+	glEnd();
 }
