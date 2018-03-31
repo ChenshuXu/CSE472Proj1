@@ -8,3 +8,5 @@ yixiemeiyong d dx
 *.exe
 /project/Debug/
 /Debug/
+*.ipch
+*.opendb

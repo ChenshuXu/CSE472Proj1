@@ -13,7 +13,7 @@ const double GR_PI = 3.1415926535897932384626433832795;
 
 // CChildView
 
-CChildView::CChildView() 
+CChildView::CChildView()
 {
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
 	m_ice.LoadFile(L"texture/ice.jpg");
@@ -46,15 +46,15 @@ END_MESSAGE_MAP()
 
 // CChildView message handlers
 
-BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if (!COpenGLWnd::PreCreateWindow(cs))
 		return FALSE;
 
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
 	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
-		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
+	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
+		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1), NULL);
 
 	return TRUE;
 }
@@ -176,6 +176,20 @@ inline void Quad(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4)
 	glEnd();
 }
 
+inline void QuadTrack(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4, double offset)
+{
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);
+	glVertex3dv(v1);
+	glTexCoord2f(1 / offset, 0);
+	glVertex3dv(v2);
+	glTexCoord2f(1 / offset, 1 / offset);
+	glVertex3dv(v3);
+	glTexCoord2f(0, 1 / offset);
+	glVertex3dv(v4);
+	glEnd();
+}
+
 inline void Tria(GLdouble *v1, GLdouble *v2, GLdouble *v3)
 {
 	glBegin(GL_TRIANGLES);
@@ -194,34 +208,39 @@ void CChildView::SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdou
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBindTexture(GL_TEXTURE_2D, m_snow.TexName());
 
-	GLdouble a[] = { x_offset, y_offset, z_offset+p_z };
-	GLdouble b[] = { x_offset+p_x, y_offset, z_offset+p_z };
-	GLdouble d[] = { x_offset, y_offset + p_y, z_offset+p_z };
+	GLdouble a[] = { x_offset, y_offset, z_offset + p_z };
+	GLdouble b[] = { x_offset + p_x, y_offset, z_offset + p_z };
+	GLdouble d[] = { x_offset, y_offset + p_y, z_offset + p_z };
 	GLdouble e[] = { x_offset, y_offset, z_offset };
-	GLdouble f[] = { x_offset+p_x, y_offset, z_offset };
-	GLdouble h[] = { x_offset, y_offset+p_y, z_offset };
+	GLdouble f[] = { x_offset + p_x, y_offset, z_offset };
+	GLdouble h[] = { x_offset, y_offset + p_y, z_offset };
 
 	// I'm going to mess with the colors a bit so
 	// the faces will be visible in solid shading
 	glColor3d(p_color[0], p_color[1], p_color[2]);
 	Tria(a, b, d); // Front
 
-	//glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
+				   //glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
 	Quad(b, f, h, d); // Top
 
-	//glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
+					  //glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
 	Tria(f, e, h); // Back
 
-	//glColor3d(p_color[0] * 0.90, p_color[1] * 0, p_color[2] * 0.90);
+				   //glColor3d(p_color[0] * 0.90, p_color[1] * 0, p_color[2] * 0.90);
 	Quad(h, e, a, d); // Left
 
-	//glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
+					  //glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
 	Quad(a, e, f, b); // Bottom
 	glDisable(GL_TEXTURE_2D);
 
 }
 
 void CChildView::drw_straightTrack() {
+
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBindTexture(GL_TEXTURE_2D, m_ice.TexName());
+
 	/*
 	Function drw_polygon:
 	Arguments:
@@ -243,6 +262,7 @@ void CChildView::drw_straightTrack() {
 	double previous_x = r * cos(0);
 	double previous_y = r * sin(0);
 
+	int count = 0;
 	for (int i = arg; i <= arg + 180; i += (180 / n)) {
 		float rad = i * GR_PI / 180; // degrees to radians
 
@@ -251,16 +271,19 @@ void CChildView::drw_straightTrack() {
 		GLdouble c[] = { r * cos(rad), r * sin(rad), length };
 		GLdouble d[] = { r * cos(rad), r * sin(rad), 0 };
 
-		Quad(a, b, c, d);
-		Quad(a, d, c, b);
+		QuadTrack(a, b, c, d, 61);
+		QuadTrack(a, d, c, d, 61);
 
 
 		previous_x = r * cos(rad);
 		previous_y = r * sin(rad);
+		count++;
 
 	}
+	glDisable(GL_TEXTURE_2D);
+
 }
-	
+
 void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset)
 {
 	GLdouble a[] = { x_offset, y_offset - p_y, z_offset + p_z };
@@ -275,64 +298,64 @@ void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble 
 	//glColor3d(p_color[0], p_color[1], p_color[2]);
 	Tria(a, b, d); // Front
 
-	//glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
+				   //glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
 	Quad(b, f, h, d); // Top
 
-	//glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
+					  //glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
 	Tria(f, e, h); // Back
 
-	//glColor3d(p_color[0] * 0.90, p_color[1] * 0, p_color[2] * 0.90);
+				   //glColor3d(p_color[0] * 0.90, p_color[1] * 0, p_color[2] * 0.90);
 	Quad(h, e, a, d); // Left
 
-	//glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
+					  //glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
 	Quad(a, e, f, b); // Bottom
 }
 
 void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1.0) {
-		/*
-		+	Function drw_polygon:
-		+	Arguments:
-		+	n - number of sides
-		+	arg - starting angle (not so important at all)
-		+	mult - multiplying sides to incrase their length
-		+	v - cylinder height
-		+	*/
-		
-			// DumbProof Double Check :)
-		if (arg < 0)
+	/*
+	+	Function drw_polygon:
+	+	Arguments:
+	+	n - number of sides
+	+	arg - starting angle (not so important at all)
+	+	mult - multiplying sides to incrase their length
+	+	v - cylinder height
+	+	*/
+
+	// DumbProof Double Check :)
+	if (arg < 0)
 		arg = 0;
-	
-			// Cylinder Bottom
-		glBegin(GL_POLYGON);
+
+	// Cylinder Bottom
+	glBegin(GL_POLYGON);
 	glColor4f(1.0, 0.8, 0.8, 1.0);
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * sin(a), mult * cos(a), 0.0);
-		
+
 	}
 	glEnd();
-	
-			// Cylinder Top
-		glBegin(GL_POLYGON);
+
+	// Cylinder Top
+	glBegin(GL_POLYGON);
 	//glColor4f(0.0, 0.0, 1.0, 1.0);
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * cos(a), mult * sin(a), v);
-		
+
 	}
 	glEnd();
-	
-			// Cylinder "Cover"
-		glBegin(GL_QUAD_STRIP);
+
+	// Cylinder "Cover"
+	glBegin(GL_QUAD_STRIP);
 	//glColor4f(1.0, 1.0, 0.0, 1.0);
 	for (int i = arg; i < 480; i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * cos(a), mult * sin(a), v);
 		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
-		
+
 	}
 	glEnd();
-	
+
 }
 
 
