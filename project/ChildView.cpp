@@ -176,12 +176,29 @@ inline void Quad(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4)
 	glEnd();
 }
 
-inline void QuadTrack(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4, double offset)
-{
+//inline void QuadTrack(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4, double step2r, double a2a, double a2b)
+//{
+//	glBegin(GL_QUADS);
+//	glTexCoord2d(a2a / GR_PI, 0. / GR_PI / step2r);
+//	glVertex3dv(v1);
+//	glTexCoord2d(a2a / GR_PI, 1. / GR_PI / step2r);
+//	glVertex3dv(v2);
+//	glTexCoord2d(a2b / GR_PI, 1. / GR_PI / step2r);
+//	glVertex3dv(v3);
+//	glTexCoord2d(a2b / GR_PI, 0. / GR_PI / step2r);
+//	glVertex3dv(v4);
+//	glEnd();
+//}
+
+inline void QuadTrack(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4) {
 	glBegin(GL_QUADS);
+	//glTexCoord2d(a2a / GR_PI, 0. / GR_PI / step2r);
 	glVertex3dv(v1);
+	//glTexCoord2d(a2a / GR_PI, 1. / GR_PI / step2r);
 	glVertex3dv(v2);
+	//glTexCoord2d(a2b / GR_PI, 1. / GR_PI / step2r);
 	glVertex3dv(v3);
+	//glTexCoord2d(a2b / GR_PI, 0. / GR_PI / step2r);
 	glVertex3dv(v4);
 	glEnd();
 }
@@ -259,9 +276,11 @@ void CChildView::drw_straightTrack() {
 	double previous_y = r * sin(0);
 
 	double count = 0;
+
+	///////////////////
 	double coord = 0;
 
-	for (int i = arg; i <= arg + 180; i += (180 / n)) {
+	for (int i = arg; i <= arg + 180;i += (180 / n)) {
 		float rad = i * GR_PI / 180; // degrees to radians
 
 		GLdouble a[] = { previous_x, previous_y, 0 };
@@ -270,9 +289,11 @@ void CChildView::drw_straightTrack() {
 		GLdouble d[] = { r * cos(rad), r * sin(rad), 0 };
 
 		coord = coord + (1.0 / 61.0);
-		glTexCoord2f(coord, 0);
-		QuadTrack(a, b, c, d, coord);
-		QuadTrack(a, d, c, d, coord);
+		glTexCoord2d(coord , 0);
+		QuadTrack(a, b, c, d);
+		QuadTrack(a, d, c, b);
+		//QuadTrack(a, b, c, d, rad, coord, i);
+		//QuadTrack(a, d, c, b, rad, coord, i);
 
 
 		previous_x = r * cos(rad);
