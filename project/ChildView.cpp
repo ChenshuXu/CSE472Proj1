@@ -16,7 +16,7 @@ const double GR_PI = 3.1415926535897932384626433832795;
 CChildView::CChildView()
 {
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
-	m_ice.LoadFile(L"texture/ice.jpg");
+	m_ice.LoadFile(L"texture/color_bar.jpg");
 	m_snow.LoadFile(L"texture/snow.jpg");
 	m_trackCurve1.SetTexture(&m_ice);
 	m_trackCurve2.SetTexture(&m_ice);
@@ -80,7 +80,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glEnable(GL_CULL_FACE);
 
 	// Draw a coordinate axis
-	glColor3d(0., 1., 1.);
+	//glColor3d(0., 1., 1.);
 
 	glBegin(GL_LINES);
 	glVertex3d(0., 0., 0.);
@@ -179,13 +179,9 @@ inline void Quad(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4)
 inline void QuadTrack(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4, double offset)
 {
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);
 	glVertex3dv(v1);
-	glTexCoord2f(1 / offset, 0);
 	glVertex3dv(v2);
-	glTexCoord2f(1 / offset, 1 / offset);
 	glVertex3dv(v3);
-	glTexCoord2f(0, 1 / offset);
 	glVertex3dv(v4);
 	glEnd();
 }
@@ -262,7 +258,9 @@ void CChildView::drw_straightTrack() {
 	double previous_x = r * cos(0);
 	double previous_y = r * sin(0);
 
-	int count = 0;
+	double count = 0;
+	double coord = 0;
+
 	for (int i = arg; i <= arg + 180; i += (180 / n)) {
 		float rad = i * GR_PI / 180; // degrees to radians
 
@@ -271,8 +269,10 @@ void CChildView::drw_straightTrack() {
 		GLdouble c[] = { r * cos(rad), r * sin(rad), length };
 		GLdouble d[] = { r * cos(rad), r * sin(rad), 0 };
 
-		QuadTrack(a, b, c, d, 61);
-		QuadTrack(a, d, c, d, 61);
+		coord = coord + (1.0 / 61.0);
+		glTexCoord2f(coord, 0);
+		QuadTrack(a, b, c, d, coord);
+		QuadTrack(a, d, c, d, coord);
 
 
 		previous_x = r * cos(rad);
@@ -327,7 +327,7 @@ void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1
 
 	// Cylinder Bottom
 	glBegin(GL_POLYGON);
-	glColor4f(1.0, 0.8, 0.8, 1.0);
+	//glColor4f(1.0, 0.8, 0.8, 1.0);
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * sin(a), mult * cos(a), 0.0);
