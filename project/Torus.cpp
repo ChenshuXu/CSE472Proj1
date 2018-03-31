@@ -44,12 +44,12 @@ CTorus::~CTorus(void)
 //
 void CTorus::Draw()
 {
-	//if (m_texture != NULL)
-	//{
-	//	glEnable(GL_TEXTURE_2D);
-	//	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	//	glBindTexture(GL_TEXTURE_2D, m_texture->TexName());
-	//}
+	if (m_texture != NULL)
+	{
+		glEnable(GL_TEXTURE_2D);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glBindTexture(GL_TEXTURE_2D, m_texture->TexName());
+	}
     // How large are the angular steps in radians
     const double step1r = 2. * GR_PI / m_steps1;
     const double step2r = 2. * GR_PI / m_steps2;
@@ -120,10 +120,10 @@ void CTorus::Draw()
         }
 
     }
-	//if (m_texture != NULL)
-	//{
-	//	glDisable(GL_TEXTURE_2D);
-	//}
+	if (m_texture != NULL)
+	{
+		glDisable(GL_TEXTURE_2D);
+	}
 }
 
 
