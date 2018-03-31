@@ -9,6 +9,8 @@
 #include "Torus.h"
 #include "TorusStraight.h"
 
+const double GR_PI = 3.1415926535897932384626433832795;
+
 // CChildView
 
 CChildView::CChildView() 
@@ -117,7 +119,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glRotated(180, 0, 1, 0);
 	glRotated(0, 0, 0, 1);
 	glTranslated(0, 0, 0);
-	m_straightTrack1.Draw();
+	drw_straightTrack();
 	glPopMatrix();
 	// Straight track 2
 
@@ -215,14 +217,14 @@ void CChildView::drw_straightTrack() {
 	float v = 10.0;
 	float length = 10.0; // Length of track
 
-	const double step2r = 2. * GR_PI / numSteps /2;
+	const double step2r = 2. * GR_PI / numSteps / 2;
 
 	double previous_x = r * cos(0);
 	double previous_y = r * sin(0);
-	
+
 	for (int i = arg; i < arg + 180; i += (180 / n)) {
 		float rad = i * GR_PI / 180; // degrees to radians
-		
+
 		GLdouble a[] = { previous_x, previous_y, 0 };
 		GLdouble b[] = { previous_x, previous_y, length };
 		GLdouble c[] = { r * cos(rad), r * sin(rad), length };
@@ -230,12 +232,13 @@ void CChildView::drw_straightTrack() {
 
 		Quad(a, b, c, d);
 		Quad(a, d, c, b);
-		
-		
+
+
 		previous_x = r * cos(rad);
 		previous_y = r * sin(rad);
-		
+
 	}
+}
 	
 void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset)
 {

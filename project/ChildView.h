@@ -37,7 +37,8 @@ protected:
 public:
 	void OnGLDraw(CDC* pDC);
 	void SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
-	void Box(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color);
+	void drw_straightTrack();
+	void Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
 	afx_msg void OnCameraFreecamera();
 	afx_msg void OnCameraAerialcamera();
 	afx_msg void OnCameraCamera1();
@@ -62,7 +63,7 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
+	
 
 
 };
