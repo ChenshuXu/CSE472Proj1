@@ -9,7 +9,7 @@ class CTorus
 public:
     CTorus(void);
     virtual ~CTorus(void);
-
+   
     //! Set the large radius of the torus
     /*! This is the radius of the entire torus. The
         default is 5cm.

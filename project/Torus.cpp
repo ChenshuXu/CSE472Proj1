@@ -9,7 +9,7 @@ const double GR_PI = 3.1415926535897932384626433832795;
 
 CTorus::CTorus(void)
 {
-    //
+    // 
     // Default values
     //
 
