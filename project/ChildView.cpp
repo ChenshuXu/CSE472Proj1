@@ -115,25 +115,46 @@ void CChildView::OnGLDraw(CDC* pDC)
 
 	// Straight track 1
 	glPushMatrix();
-	glRotated(180, 1, 0, 0);
-	glRotated(180, 0, 1, 0);
-	glRotated(0, 0, 0, 1);
-	glTranslated(0, 0, 0);
+	glRotated(0, 1, 0, 0);
+	glRotated(0, 0, 1, 0);
+	glRotated(165, 0, 0, 1);
+	glTranslated(-19.8, -11.7, 10);
 	drw_straightTrack();
 	glPopMatrix();
+
 	// Straight track 2
+	glPushMatrix();
+	glRotated(-3, 0, 1, 0);
+	glRotated(-13.7, 0, 0, 1);
+	glRotated(180, 1, 0, 1);
+	glTranslated(24, -11.6, 6);
+	drw_straightTrack();
+	glPopMatrix();
 
 	// Straight track 3
+	glPushMatrix();
+	glRotated(-3, 0, 1, 0);
+	glRotated(-13.7, 0, 0, 1);
+	glRotated(180, 1, 0, 1);
+	glTranslated(3.58, -11.31, 25.6);
+	drw_straightTrack();
+	glPopMatrix();
 
 	const double WHITE[] = { 1,1,1 };
 	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
+
+	glPushMatrix();
+	glRotated(87, 0, 1, 0);
+	glRotated(14, 1, 0, 0);
+	glTranslated(-10, 11, 0);
+	drw_carBody(360, 0, 1, 2);
+	glPopMatrix();
 
 	glPushMatrix();
 	glRotated(-90, 0, 0, 1);
 	glRotated(-90, 1, 0, 0);
 	Kinfe(0.8, .1, 2.5, WHITE, -10., -10., 15.);
 	glPopMatrix();
-
 }
 
 //
@@ -222,7 +243,7 @@ void CChildView::drw_straightTrack() {
 	double previous_x = r * cos(0);
 	double previous_y = r * sin(0);
 
-	for (int i = arg; i < arg + 180; i += (180 / n)) {
+	for (int i = arg; i <= arg + 180; i += (180 / n)) {
 		float rad = i * GR_PI / 180; // degrees to radians
 
 		GLdouble a[] = { previous_x, previous_y, 0 };
@@ -265,6 +286,53 @@ void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble 
 
 	//glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
 	Quad(a, e, f, b); // Bottom
+}
+
+void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1.0) {
+		/*
+		+	Function drw_polygon:
+		+	Arguments:
+		+	n - number of sides
+		+	arg - starting angle (not so important at all)
+		+	mult - multiplying sides to incrase their length
+		+	v - cylinder height
+		+	*/
+		
+			// DumbProof Double Check :)
+		if (arg < 0)
+		arg = 0;
+	
+			// Cylinder Bottom
+		glBegin(GL_POLYGON);
+	glColor4f(1.0, 0.8, 0.8, 1.0);
+	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
+		float a = i * GR_PI / 180; // degrees to radians
+		glVertex3f(mult * sin(a), mult * cos(a), 0.0);
+		
+	}
+	glEnd();
+	
+			// Cylinder Top
+		glBegin(GL_POLYGON);
+	//glColor4f(0.0, 0.0, 1.0, 1.0);
+	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
+		float a = i * GR_PI / 180; // degrees to radians
+		glVertex3f(mult * cos(a), mult * sin(a), v);
+		
+	}
+	glEnd();
+	
+			// Cylinder "Cover"
+		glBegin(GL_QUAD_STRIP);
+	//glColor4f(1.0, 1.0, 0.0, 1.0);
+	for (int i = arg; i < 480; i += (360 / n)) {
+		float a = i * GR_PI / 180; // degrees to radians
+		glVertex3f(mult * cos(a), mult * sin(a), v);
+		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
+		
+	}
+	glEnd();
+	
 }
 
 
