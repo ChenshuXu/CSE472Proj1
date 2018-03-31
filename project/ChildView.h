@@ -7,6 +7,7 @@
 #include "graphics/GrCamera.h"
 #include "Torus.h"
 #include "TorusStraight.h"
+#include "graphics/GrTexture.h"
 
 // CChildView window
 
@@ -36,20 +37,17 @@ protected:
 public:
 	void OnGLDraw(CDC* pDC);
 	void SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
-	void drw_straightTrack();
-	void drw_carBody(int n, int arg, float mult, float v);
+	void Box(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color);
 	afx_msg void OnCameraFreecamera();
 	afx_msg void OnCameraAerialcamera();
 	afx_msg void OnCameraCamera1();
 	afx_msg void OnCameraCamera2();
 	afx_msg void OnCameraBobsledcamera();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	
 private:
 	int camNum = 0;
 	CGrCamera m_camera;
-	CTorus m_tori;
+	//CTorus m_tori;
 
 	CTorusStraight m_straightTrack1;
 	CTorusStraight m_straightTrack2;
@@ -57,6 +55,14 @@ private:
 
 	CTorus m_trackCurve1;
 	CTorus m_trackCurve2;
+	CGrTexture m_ice;
+	CGrTexture m_snow;
+
+public:
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
 
 
 };

@@ -8,18 +8,19 @@
 #include "graphics/GrCamera.h"
 #include "Torus.h"
 #include "TorusStraight.h"
-#include "math.h"
-#include <cmath>
-
-const double GR_PI = 3.1415926535897932384626433832795;
 
 // CChildView
 
-const double M_PI = 3.1415926535897932384626433832795;
-
-CChildView::CChildView()
+CChildView::CChildView() 
 {
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
+	m_ice.LoadFile(L"texture/ice.jpg");
+	m_snow.LoadFile(L"texture/snow.jpg");
+	m_trackCurve1.SetTexture(&m_ice);
+	m_trackCurve2.SetTexture(&m_ice);
+
+
+
 }
 
 CChildView::~CChildView()
@@ -69,7 +70,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 	int width, height;
 	GetSize(width, height);
 	m_camera.Apply(width, height);
-						  // Enable depth test
+	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 
 	// Cull backfacing polygons
@@ -92,7 +93,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 	// 
 	// INSERT DRAWING CODE HERE
 	//
-	
+
 
 	glPushMatrix();
 	glRotated(180, 1, 0, 0);
@@ -111,23 +112,26 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glPopMatrix();
 
 	// Straight track 1
-	drw_straightTrack();
-	
+	glPushMatrix();
+	glRotated(180, 1, 0, 0);
+	glRotated(180, 0, 1, 0);
+	glRotated(0, 0, 0, 1);
+	glTranslated(0, 0, 0);
+	m_straightTrack1.Draw();
+	glPopMatrix();
 	// Straight track 2
 
 	// Straight track 3
 
-	// car body
+	const double WHITE[] = { 1,1,1 };
+	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
+
 	glPushMatrix();
-	glRotated(90, 0, 1, 0);
-	glRotated(14, 1, 0, 0);
-	glTranslated(-10, 11, 0);
-	drw_carBody(360, 0, 1, 4.5);
+	glRotated(-90, 0, 0, 1);
+	glRotated(-90, 1, 0, 0);
+	Kinfe(0.8, .1, 2.5, WHITE, -10., -10., 15.);
 	glPopMatrix();
 
-	const double WHITE[] = { 1, 1, 1 };
-
-	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
 }
 
 //
@@ -138,9 +142,13 @@ void CChildView::OnGLDraw(CDC* pDC)
 inline void Quad(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4)
 {
 	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);
 	glVertex3dv(v1);
+	glTexCoord2f(1, 0);
 	glVertex3dv(v2);
+	glTexCoord2f(1, 1);
 	glVertex3dv(v3);
+	glTexCoord2f(0, 1);
 	glVertex3dv(v4);
 	glEnd();
 }
@@ -148,17 +156,24 @@ inline void Quad(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4)
 inline void Tria(GLdouble *v1, GLdouble *v2, GLdouble *v3)
 {
 	glBegin(GL_TRIANGLES);
+	glTexCoord2f(0, 0);
 	glVertex3dv(v1);
+	glTexCoord2f(1, 1);
 	glVertex3dv(v2);
+	glTexCoord2f(0, 1);
 	glVertex3dv(v3);
 	glEnd();
 }
 
 void CChildView::SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset)
 {
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBindTexture(GL_TEXTURE_2D, m_snow.TexName());
+
 	GLdouble a[] = { x_offset, y_offset, z_offset+p_z };
 	GLdouble b[] = { x_offset+p_x, y_offset, z_offset+p_z };
-	GLdouble d[] = { x_offset, y_offset+p_y, z_offset+p_z };
+	GLdouble d[] = { x_offset, y_offset + p_y, z_offset+p_z };
 	GLdouble e[] = { x_offset, y_offset, z_offset };
 	GLdouble f[] = { x_offset+p_x, y_offset, z_offset };
 	GLdouble h[] = { x_offset, y_offset+p_y, z_offset };
@@ -168,17 +183,19 @@ void CChildView::SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdou
 	glColor3d(p_color[0], p_color[1], p_color[2]);
 	Tria(a, b, d); // Front
 
-	glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
+	//glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
 	Quad(b, f, h, d); // Top
 
-	glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
+	//glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
 	Tria(f, e, h); // Back
 
-	glColor3d(p_color[0] * 0.90, p_color[1] * 0, p_color[2] * 0.90);
+	//glColor3d(p_color[0] * 0.90, p_color[1] * 0, p_color[2] * 0.90);
 	Quad(h, e, a, d); // Left
 
-	glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
+	//glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
 	Quad(a, e, f, b); // Bottom
+	glDisable(GL_TEXTURE_2D);
+
 }
 
 void CChildView::drw_straightTrack() {
@@ -220,7 +237,31 @@ void CChildView::drw_straightTrack() {
 		
 	}
 	
+void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset)
+{
+	GLdouble a[] = { x_offset, y_offset - p_y, z_offset + p_z };
+	GLdouble b[] = { x_offset + p_x, y_offset, z_offset + p_z };
+	GLdouble d[] = { x_offset, y_offset + p_y, z_offset + p_z };
+	GLdouble e[] = { x_offset, y_offset - p_y, z_offset };
+	GLdouble f[] = { x_offset + p_x, y_offset, z_offset };
+	GLdouble h[] = { x_offset, (y_offset + p_y), z_offset };
 
+	// I'm going to mess with the colors a bit so
+	// the faces will be visible in solid shading
+	//glColor3d(p_color[0], p_color[1], p_color[2]);
+	Tria(a, b, d); // Front
+
+	//glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
+	Quad(b, f, h, d); // Top
+
+	//glColor3d(p_color[0] * 0.85, p_color[1] * 0, p_color[2] * 0.85);
+	Tria(f, e, h); // Back
+
+	//glColor3d(p_color[0] * 0.90, p_color[1] * 0, p_color[2] * 0.90);
+	Quad(h, e, a, d); // Left
+
+	//glColor3d(p_color[0] * 0.80, p_color[1] * 0.80, p_color[2] * 0);
+	Quad(a, e, f, b); // Bottom
 }
 
 
@@ -293,47 +334,4 @@ void CChildView::OnRButtonDown(UINT nFlags, CPoint point)
 	}
 
 	COpenGLWnd::OnRButtonDown(nFlags, point);
-}
-
-void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1.0) {
-	/*
-	Function drw_polygon:
-	Arguments:
-	n - number of sides
-	arg - starting angle (not so important at all)
-	mult - multiplying sides to incrase their length
-	v - cylinder height
-	*/
-
-	// DumbProof Double Check :)
-	if (arg < 0)
-		arg = 0;
-
-	// Cylinder Bottom
-	glBegin(GL_POLYGON);
-	glColor4f(1.0, 0.0, 0.0, 1.0);
-	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
-		float a = i * M_PI / 180; // degrees to radians
-		glVertex3f(  mult * sin(a), mult * cos(a), 0.0);
-	}
-	glEnd();
-
-	// Cylinder Top
-	glBegin(GL_POLYGON);
-	glColor4f(0.0, 0.0, 1.0, 1.0);
-	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
-		float a = i * M_PI / 180; // degrees to radians
-		glVertex3f( mult * cos(a), mult * sin(a), v);
-	}
-	glEnd();
-
-	// Cylinder "Cover"
-	glBegin(GL_QUAD_STRIP);
-	glColor4f(1.0, 1.0, 0.0, 1.0);
-	for (int i = arg; i < 480; i += (360 / n)) {
-		float a = i * M_PI / 180; // degrees to radians
-		glVertex3f(mult * cos(a), mult * sin(a), v);
-		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
-	}
-	glEnd();
 }
