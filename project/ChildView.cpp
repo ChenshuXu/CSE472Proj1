@@ -193,29 +193,30 @@ void CChildView::drw_straightTrack() {
 	int n = 50;
 	float r = 1.5; // radius of inner half circle
 	int numSteps = 20; // number of steps
-	int arg = 180; // start angle
-	float mult = 1;
+	int arg = 0; // start angle
+	float mult = 1.5;
 	float v = 10.0;
 	float length = 10.0; // Length of track
 
 	const double step2r = 2. * GR_PI / numSteps /2;
 
-	double previous_x = 0;
-	double previous_y = 0;
-
+	double previous_x = r * cos(0);
+	double previous_y = r * sin(0);
 	
-	for (int i = arg; i < arg + 180; i += (360 / n)) {
-		float a = i * GR_PI / 180; // degrees to radians
+	for (int i = arg; i < arg + 180; i += (180 / n)) {
+		float rad = i * GR_PI / 180; // degrees to radians
 		
-		glBegin(GL_QUADS);
-		glVertex3f(previous_x, previous_y, 0.0);
-		glVertex3f(previous_x, previous_y, v);
-		glVertex3f(mult * cos(a), mult * sin(a), v);
-		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
-		glEnd();
+		GLdouble a[] = { previous_x, previous_y, 0 };
+		GLdouble b[] = { previous_x, previous_y, length };
+		GLdouble c[] = { r * cos(rad), r * sin(rad), length };
+		GLdouble d[] = { r * cos(rad), r * sin(rad), 0 };
 
-		previous_x = mult * cos(a);
-		previous_y = mult * sin(a);
+		Quad(a, b, c, d);
+		Quad(a, d, c, b);
+		
+		
+		previous_x = r * cos(rad);
+		previous_y = r * sin(rad);
 		
 	}
 	
