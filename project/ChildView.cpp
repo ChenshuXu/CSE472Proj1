@@ -10,6 +10,9 @@
 #include "TorusStraight.h"
 
 const double GR_PI = 3.1415926535897932384626433832795;
+const double WHITE[] = { 1,1,1 };
+const double PINK[] = { 1,0.9,0.9 };
+const double RED[] = { 1,0,0};
 
 // CChildView
 
@@ -96,65 +99,13 @@ void CChildView::OnGLDraw(CDC* pDC)
 	// INSERT DRAWING CODE HERE
 	//
 
+	draw_track();
 
-	glPushMatrix();
-	glRotated(180, 1, 0, 0);
-	glRotated(0, 0, 1, 0);
-	glRotated(14, 0, 0, 1);
-	glTranslated(15, -11.4, -20);
-	m_trackCurve1.Draw();
-	glPopMatrix();
-
-	glPushMatrix();
-	glRotated(180, 1, 0, 0);
-	glRotated(180, 0, 1, 0);
-	glRotated(-14, 0, 0, 1);
-	glTranslated(-25, -11.4, 10);
-	m_trackCurve2.Draw();
-	glPopMatrix();
-
-	// Straight track 1
-	glPushMatrix();
-	glRotated(0, 1, 0, 0);
-	glRotated(0, 0, 1, 0);
-	glRotated(165, 0, 0, 1);
-	glTranslated(-19.8, -11.7, 10);
-	drw_straightTrack();
-	glPopMatrix();
-
-	// Straight track 2
-	glPushMatrix();
-	glRotated(-3, 0, 1, 0);
-	glRotated(-13.7, 0, 0, 1);
-	glRotated(180, 1, 0, 1);
-	glTranslated(24, -11.6, 6);
-	drw_straightTrack();
-	glPopMatrix();
-
-	// Straight track 3
-	glPushMatrix();
-	glRotated(-3, 0, 1, 0);
-	glRotated(-13.7, 0, 0, 1);
-	glRotated(180, 1, 0, 1);
-	glTranslated(3.58, -11.31, 25.6);
-	drw_straightTrack();
-	glPopMatrix();
-
-	const double WHITE[] = { 1,1,1 };
+	
 	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
 
-	glPushMatrix();
-	glRotated(87, 0, 1, 0);
-	glRotated(14, 1, 0, 0);
-	glTranslated(-10, 11, 0);
-	drw_carBody(360, 0, 1, 2);
-	glPopMatrix();
-
-	glPushMatrix();
-	glRotated(-90, 0, 0, 1);
-	glRotated(-90, 1, 0, 0);
-	Kinfe(0.8, .1, 2.5, WHITE, -10., -10., 15.);
-	glPopMatrix();
+	draw_car(0., 0., 0.); // p_x , p_y, p_z to (0,0,0) Start Position
+	
 }
 
 //
@@ -316,7 +267,7 @@ void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble 
 
 	// I'm going to mess with the colors a bit so
 	// the faces will be visible in solid shading
-	//glColor3d(p_color[0], p_color[1], p_color[2]);
+	glColor3d(p_color[0], p_color[1], p_color[2]);
 	Tria(a, b, d); // Front
 
 				   //glColor3d(p_color[0] * 1, p_color[1] * 0.95, p_color[2] * 0.95);
@@ -332,7 +283,7 @@ void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble 
 	Quad(a, e, f, b); // Bottom
 }
 
-void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1.0) {
+void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble *p_color) {
 	/*
 	+	Function drw_polygon:
 	+	Arguments:
@@ -348,7 +299,7 @@ void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1
 
 	// Cylinder Bottom
 	glBegin(GL_POLYGON);
-	//glColor4f(1.0, 0.8, 0.8, 1.0);
+	glColor3d(p_color[0], p_color[1], p_color[2]);
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * sin(a), mult * cos(a), 0.0);
@@ -377,6 +328,78 @@ void CChildView::drw_carBody(int n = 3, int arg = 0, float mult = 1, float v = 1
 	}
 	glEnd();
 
+}
+
+void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
+	glPushMatrix();
+	glRotated(87, 0, 1, 0);
+	glRotated(14, 1, 0, 0);
+	glTranslated(-24 - p_z, 11.65 + p_y, 6 + p_x);
+	drw_carBody(360, 0, 1, 3, PINK);
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotated(-3, 0, 1, 0);
+	glRotated(-104, 0, 0, 1);
+	glRotated(-90, 1, 0, 0);
+	Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -23.4 - p_z, 6.2 + p_x);
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotated(-3, 0, 1, 0);
+	glRotated(-104, 0, 0, 1);
+	glRotated(-90, 1, 0, 0);
+	Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -24.7 - p_z, 6.2 + p_x);
+	glPopMatrix();
+}
+
+void CChildView::draw_track() {
+	glColor3d(1, 1, 1);
+
+	// Curve track 1
+	glPushMatrix();
+	glRotated(180, 1, 0, 0);
+	glRotated(0, 0, 1, 0);
+	glRotated(14, 0, 0, 1);
+	glTranslated(15, -11.4, -20);
+	m_trackCurve1.Draw();
+	glPopMatrix();
+
+	// Curve track 2
+	glPushMatrix();
+	glRotated(180, 1, 0, 0);
+	glRotated(180, 0, 1, 0);
+	glRotated(-14, 0, 0, 1);
+	glTranslated(-25, -11.4, 10);
+	m_trackCurve2.Draw();
+	glPopMatrix();
+
+	// Straight track 1
+	glPushMatrix();
+	glRotated(0, 1, 0, 0);
+	glRotated(0, 0, 1, 0);
+	glRotated(165, 0, 0, 1);
+	glTranslated(-19.8, -11.7, 10);
+	drw_straightTrack();
+	glPopMatrix();
+
+	// Straight track 2
+	glPushMatrix();
+	glRotated(-3, 0, 1, 0);
+	glRotated(-13.7, 0, 0, 1);
+	glRotated(180, 1, 0, 1);
+	glTranslated(24, -11.6, 6);
+	drw_straightTrack();
+	glPopMatrix();
+
+	// Straight track 3
+	glPushMatrix();
+	glRotated(-3, 0, 1, 0);
+	glRotated(-13.7, 0, 0, 1);
+	glRotated(180, 1, 0, 1);
+	glTranslated(3.58, -11.31, 25.6);
+	drw_straightTrack();
+	glPopMatrix();
 }
 
 
