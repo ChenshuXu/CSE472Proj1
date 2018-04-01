@@ -60,6 +60,15 @@ private:
 	CGrTexture m_ice;
 	CGrTexture m_snow;
 
+	UINT_PTR m_AnimTime = 0;
+
+	double m_changeX = 0;
+	double m_changeY = 0;
+	double m_changeZ = 0;
+	double m_changeAngleX = 0;
+	double m_changeAngleY = 0;
+	double m_changeAngleZ = 0;
+
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -67,5 +76,7 @@ public:
 	
 
 
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnAnimationStart();
 };
 

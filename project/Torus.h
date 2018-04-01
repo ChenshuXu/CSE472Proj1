@@ -67,6 +67,8 @@ private:
     //! Number of steps in the small radius
     double  m_steps2;
 
+	double m_r2_2;
+
 	CGrTexture *m_texture = NULL;
 };
 

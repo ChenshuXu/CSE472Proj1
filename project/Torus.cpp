@@ -26,6 +26,9 @@ CTorus::CTorus(void)
 
     // Number of steps in the small radius
     m_steps2 = 20;
+
+	// Outer torus
+	m_r2_2 = 1.8;
 }
 
 
@@ -58,40 +61,41 @@ void CTorus::Draw()
     double a1a = 0;
     double a1b = step1r;
 
-    for(int s = 0;  s < m_steps1 / 4;  s++, a1a = a1b, a1b += step1r)
-    {
-        // We build a slice out of quadrilaterals that range from 
-        // angles a2a to a2b.
+	// Draw the inner track
+	for (int s = 0; s < m_steps1 / 4; s++, a1a = a1b, a1b += step1r)
+	{
+		// We build a slice out of quadrilaterals that range from 
+		// angles a2a to a2b.
 
-        double a2a = 0;
-        double a2b = step2r;
+		double a2a = 0;
+		double a2b = step2r;
 
-        for(int s2 = 0;  s2 < 2 * m_steps2 / 4;  s2++, a2a = a2b,  a2b += step2r)
-        {
-            // We need to know the corners
-            double n[3], v[3];
+		for (int s2 = 0; s2 < 2 * m_steps2 / 4; s2++, a2a = a2b, a2b += step2r)
+		{
+			// We need to know the corners
+			double n[3], v[3];
 
-            glBegin(GL_QUADS);
+			glBegin(GL_QUADS);
 			// inner side
-            TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
-            glNormal3dv(n);
+			TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
+			glNormal3dv(n);
 			glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
-            glVertex3dv(v);
+			glVertex3dv(v);
 
-            TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
-            glNormal3dv(n);
+			TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
+			glNormal3dv(n);
 			glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
-            glVertex3dv(v);
+			glVertex3dv(v);
 
-            TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
-            glNormal3dv(n);
+			TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
+			glNormal3dv(n);
 			glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
-            glVertex3dv(v);
+			glVertex3dv(v);
 
-            TorusVertex(a1a, m_r1, a2b, m_r2, v, n);
-            glNormal3dv(n);
+			TorusVertex(a1a, m_r1, a2b, m_r2, v, n);
+			glNormal3dv(n);
 			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
-            glVertex3dv(v);
+			glVertex3dv(v);
 
 			// outer side...
 			TorusVertex(a1a, m_r1, a2a, m_r2, v, n);
@@ -103,23 +107,87 @@ void CTorus::Draw()
 			glNormal3dv(n);
 			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
 			glVertex3dv(v);
-			
+
 
 			TorusVertex(a1b, m_r1, a2b, m_r2, v, n);
 			glNormal3dv(n);
 			glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
 			glVertex3dv(v);
 
-			
+
 
 			TorusVertex(a1b, m_r1, a2a, m_r2, v, n);
 			glNormal3dv(n);
 			glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
 			glVertex3dv(v);
-            glEnd();
-        }
+			glEnd();
+		}
+	}
 
-    }
+	a1a = 0;
+	a1b = step1r;
+	// Draw the inner track
+	for (int s = 0; s < m_steps1 / 4; s++, a1a = a1b, a1b += step1r)
+	{
+		// We build a slice out of quadrilaterals that range from 
+		// angles a2a to a2b.
+
+		double a2a = 0;
+		double a2b = step2r;
+
+		for (int s2 = 0; s2 < 2 * m_steps2 / 4; s2++, a2a = a2b, a2b += step2r)
+		{
+			// We need to know the corners
+			double n[3], v[3];
+
+			glBegin(GL_QUADS);
+			// inner side
+			TorusVertex(a1a, m_r1, a2a, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
+			glVertex3dv(v);
+
+			TorusVertex(a1b, m_r1, a2a, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
+			glVertex3dv(v);
+
+			TorusVertex(a1b, m_r1, a2b, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
+			glVertex3dv(v);
+
+			TorusVertex(a1a, m_r1, a2b, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
+			glVertex3dv(v);
+
+			// outer side...
+			TorusVertex(a1a, m_r1, a2a, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2a / GR_PI, a1a / GR_PI / step2r);
+			glVertex3dv(v);
+
+			TorusVertex(a1a, m_r1, a2b, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2b / GR_PI, a1a / GR_PI / step2r);
+			glVertex3dv(v);
+
+
+			TorusVertex(a1b, m_r1, a2b, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2b / GR_PI, a1b / GR_PI / step2r);
+			glVertex3dv(v);
+
+
+
+			TorusVertex(a1b, m_r1, a2a, m_r2_2, v, n);
+			glNormal3dv(n);
+			glTexCoord2d(a2a / GR_PI, a1b / GR_PI / step2r);
+			glVertex3dv(v);
+			glEnd();
+		}
+	}
 	if (m_texture != NULL)
 	{
 		glDisable(GL_TEXTURE_2D);

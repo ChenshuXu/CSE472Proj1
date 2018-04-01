@@ -40,6 +40,8 @@ BEGIN_MESSAGE_MAP(CChildView, COpenGLWnd)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_RBUTTONDOWN()
+	ON_WM_TIMER()
+	ON_COMMAND(ID_ANIMATION_START, &CChildView::OnAnimationStart)
 END_MESSAGE_MAP()
 
 
@@ -144,16 +146,18 @@ void CChildView::OnGLDraw(CDC* pDC)
 	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
 
 	glPushMatrix();
-	glRotated(87, 0, 1, 0);
-	glRotated(14, 1, 0, 0);
 	glTranslated(-10, 11, 0);
+	glRotated(87, 0, 1, 0);
+	//glRotated(14, 1, 0, 0);
+	glRotated(m_changeX, 1, 0, 0);
 	drw_carBody(360, 0, 1, 2);
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotated(-90, 0, 0, 1);
+	glTranslated(10, 10, 15);
+	glRotated(m_changeX, 0, 0, 1);
 	glRotated(-90, 1, 0, 0);
-	Kinfe(0.8, .1, 2.5, WHITE, -10., -10., 15.);
+	Kinfe(0.8, .1, 2.5, WHITE, -0.4, -0.5, -2.5/2);
 	glPopMatrix();
 }
 
@@ -262,15 +266,14 @@ void CChildView::drw_straightTrack() {
 	mult - multiplying sides to incrase their length
 	v - cylinder height
 	*/
-	int n = 50;
+	int n = 50; // number of steps
 	float r = 1.5; // radius of inner half circle
-	int numSteps = 20; // number of steps
+	float r2 = 1.8; // radius of outer half circle
 	int arg = 0; // start angle
 	float mult = 1.5;
 	float v = 10.0;
 	float length = 10.0; // Length of track
 
-	const double step2r = 2. * GR_PI / numSteps / 2;
 
 	double previous_x = r * cos(0);
 	double previous_y = r * sin(0);
@@ -288,7 +291,7 @@ void CChildView::drw_straightTrack() {
 		GLdouble c[] = { r * cos(rad), r * sin(rad), length };
 		GLdouble d[] = { r * cos(rad), r * sin(rad), 0 };
 
-		coord = coord + (1.0 / 61.0);
+		coord = coord + (1.0 / 60);
 		glTexCoord2d(coord , 0);
 		QuadTrack(a, b, c, d);
 		QuadTrack(a, d, c, b);
@@ -298,6 +301,36 @@ void CChildView::drw_straightTrack() {
 
 		previous_x = r * cos(rad);
 		previous_y = r * sin(rad);
+		count++;
+
+	}
+
+	// outer circle
+	previous_x = r2 * cos(0);
+	previous_y = r2 * sin(0);
+	count = 0;
+
+	///////////////////
+	coord = 0;
+
+	for (int i = arg; i <= arg + 180; i += (180 / n)) {
+		float rad = i * GR_PI / 180; // degrees to radians
+
+		GLdouble a[] = { previous_x, previous_y, 0 };
+		GLdouble b[] = { previous_x, previous_y, length };
+		GLdouble c[] = { r2 * cos(rad), r2 * sin(rad), length };
+		GLdouble d[] = { r2 * cos(rad), r2 * sin(rad), 0 };
+
+		coord = coord + (1.0 / 60);
+		glTexCoord2d(coord, 0);
+		QuadTrack(a, b, c, d);
+		QuadTrack(a, d, c, b);
+		//QuadTrack(a, b, c, d, rad, coord, i);
+		//QuadTrack(a, d, c, b, rad, coord, i);
+
+
+		previous_x = r2 * cos(rad);
+		previous_y = r2 * sin(rad);
 		count++;
 
 	}
@@ -449,4 +482,31 @@ void CChildView::OnRButtonDown(UINT nFlags, CPoint point)
 	}
 
 	COpenGLWnd::OnRButtonDown(nFlags, point);
+}
+
+
+void CChildView::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: Add your message handler code here and/or call default
+	m_changeX += 1;
+	Invalidate();
+
+	COpenGLWnd::OnTimer(nIDEvent);
+}
+
+
+void CChildView::OnAnimationStart()
+{
+	// TODO: Add your command handler code here
+	if (m_AnimTime == 0)
+	{
+		// Create the timer
+		m_AnimTime = SetTimer(1, 30, NULL);
+	}
+	else
+	{
+		// Destroy the timer
+		KillTimer(m_AnimTime);
+		m_AnimTime = 0;
+	}
 }

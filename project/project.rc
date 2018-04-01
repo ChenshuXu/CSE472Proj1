@@ -131,6 +131,10 @@ BEGIN
         MENUITEM "&Camera 2",                   ID_CAMERA_CAMERA2
         MENUITEM "&Bobsled Camera",             ID_CAMERA_BOBSLEDCAMERA
     END
+    POPUP "Animation"
+    BEGIN
+        MENUITEM "&Start",                      ID_ANIMATION_START
+    END
 END
 
 
