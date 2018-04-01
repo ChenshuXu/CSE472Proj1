@@ -19,6 +19,9 @@ const double RED[] = { 1,0,0};
 CChildView::CChildView()
 {
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
+
+
+
 	m_ice.LoadFile(L"texture/color_bar.jpg");
 	m_snow.LoadFile(L"texture/snow.jpg");
 	m_trackCurve1.SetTexture(&m_ice);
@@ -471,7 +474,7 @@ void CChildView::OnCameraAerialcamera()
 {
 	// TODO: Add your command handler code here
 	camNum = 1;
-	m_camera.Set(40, 10, 50, 0, 0, 0, 0, 1, 0);
+	m_camera.Set(100, 100, 30, 10, -10, 30, 0, 0, 0);
 	Invalidate();
 }
 
@@ -480,7 +483,7 @@ void CChildView::OnCameraCamera1()
 {
 	// TODO: Add your command handler code here
 	camNum = 2;
-	m_camera.Set(40, 10, 50, 0, 0, 0, 0, 1, 0);
+	m_camera.Set(40, 20, 50, 12, 1, 0, 0, 1, 0);
 	Invalidate();
 }
 
@@ -489,6 +492,8 @@ void CChildView::OnCameraCamera2()
 {
 	// TODO: Add your command handler code here
 	camNum = 3;
+	m_camera.Set(70, 20, -40, 20, 5, 11, 0, 1, 0);
+	Invalidate();
 }
 
 
