@@ -24,6 +24,9 @@ CChildView::CChildView()
 
 	m_ice.LoadFile(L"texture/color_bar.jpg");
 	m_snow.LoadFile(L"texture/snow.jpg");
+	m_flag.LoadFile(L"texture/flag.png");
+	//m_test.LoadFile(L"texture/test.jpg");
+
 	m_trackCurve1.SetTexture(&m_ice);
 	m_trackCurve2.SetTexture(&m_ice);
 
@@ -325,6 +328,9 @@ void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble 
 }
 
 void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble *p_color) {
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBindTexture(GL_TEXTURE_2D, m_flag.TexName());
 	/*
 	+	Function drw_polygon:
 	+	Arguments:
@@ -340,10 +346,12 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 
 	// Cylinder Bottom
 	glBegin(GL_POLYGON);
-	glColor3d(p_color[0], p_color[1], p_color[2]);
+	//glColor3d(p_color[0], p_color[1], p_color[2]);
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * sin(a), mult * cos(a), 0.0);
+		glTexCoord2d(0,0);
+
 
 	}
 	glEnd();
@@ -355,6 +363,7 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * cos(a), mult * sin(a), v);
 
+
 	}
 	glEnd();
 
@@ -363,11 +372,18 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 	//glColor4f(1.0, 1.0, 0.0, 1.0);
 	for (int i = arg; i < 480; i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
+		glTexCoord2d(0, 0);
+
 		glVertex3f(mult * cos(a), mult * sin(a), v);
+		glTexCoord2d(mult * cos(a), mult * sin(a));
+
 		glVertex3f(mult * cos(a), mult * sin(a), 0.0);
+
 
 	}
 	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
 
 }
 

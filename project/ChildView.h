@@ -61,6 +61,10 @@ private:
 	CTorus m_trackCurve2;
 	CGrTexture m_ice;
 	CGrTexture m_snow;
+	CGrTexture m_flag;
+	CGrTexture m_test;
+
+
 
 	UINT_PTR m_AnimTime = 0;
 
