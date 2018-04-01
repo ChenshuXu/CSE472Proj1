@@ -370,7 +370,7 @@ void CChildView::draw_track() {
 	glRotated(180, 1, 0, 0);
 	glRotated(180, 0, 1, 0);
 	glRotated(-14, 0, 0, 1);
-	glTranslated(-25, -11.4, 10);
+	glTranslated(-24.88, -11.36, 10);
 	m_trackCurve2.Draw();
 	glPopMatrix();
 
@@ -379,7 +379,7 @@ void CChildView::draw_track() {
 	glRotated(0, 1, 0, 0);
 	glRotated(0, 0, 1, 0);
 	glRotated(165, 0, 0, 1);
-	glTranslated(-19.8, -11.7, 10);
+	glTranslated(-19.78, -11.73, 10);
 	drw_straightTrack();
 	glPopMatrix();
 
@@ -397,7 +397,7 @@ void CChildView::draw_track() {
 	glRotated(-3, 0, 1, 0);
 	glRotated(-13.7, 0, 0, 1);
 	glRotated(180, 1, 0, 1);
-	glTranslated(3.58, -11.31, 25.6);
+	glTranslated(3.58, -11.31, 25.48);
 	drw_straightTrack();
 	glPopMatrix();
 }
