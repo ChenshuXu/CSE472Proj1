@@ -19,16 +19,10 @@ const double RED[] = { 1,0,0};
 CChildView::CChildView()
 {
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
-
-
-
 	m_ice.LoadFile(L"texture/color_bar.jpg");
 	m_snow.LoadFile(L"texture/snow.jpg");
 	m_trackCurve1.SetTexture(&m_ice);
 	m_trackCurve2.SetTexture(&m_ice);
-
-
-
 }
 
 CChildView::~CChildView()
@@ -112,8 +106,8 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotated(m_changeX, 0, 1, 0);
-	glTranslated(7, 9.4, 24.35);
+	glRotated(0, 0, 1, 0);
+	glTranslated(7 + m_changeX, 9.4 - m_changeY, 24.35 + m_changeZ);
 	draw_car(0., 0., 0.); // p_x , p_y, p_z to (0,0,0) Start Position
 	glPopMatrix();
 	
@@ -538,8 +532,15 @@ void CChildView::OnRButtonDown(UINT nFlags, CPoint point)
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
-	m_changeX += 1;
+	m_changeAngleX += 0.2;
 	Invalidate();
+
+	m_time += 1. / 1000;
+	m_speed = 9.8 * m_time / 2.;
+
+	m_changeX += (m_speed);
+	m_changeY += (m_speed * tan(14. * GR_PI / 180));
+	m_changeZ += (m_speed * tan(3. * GR_PI / 180));
 
 	COpenGLWnd::OnTimer(nIDEvent);
 }

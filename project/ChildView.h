@@ -64,12 +64,14 @@ private:
 
 	UINT_PTR m_AnimTime = 0;
 
-	double m_changeX = 0;
-	double m_changeY = 0;
-	double m_changeZ = 0;
-	double m_changeAngleX = 0;
-	double m_changeAngleY = 0;
-	double m_changeAngleZ = 0;
+	double m_changeX = 0.;
+	double m_changeY = 0.;
+	double m_changeZ = 0.;
+	double m_changeAngleX = 0.;
+	double m_changeAngleY = 0.;
+	double m_changeAngleZ = 0.;
+	double m_time = 0.;
+	double m_speed = 0.;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
