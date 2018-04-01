@@ -110,7 +110,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 
 	glPushMatrix();
 	glRotated(m_changeX, 0, 1, 0);
-	glTranslated(0, 0, 0);
+	glTranslated(7, 9.4, 24.35);
 	draw_car(0., 0., 0.); // p_x , p_y, p_z to (0,0,0) Start Position
 	glPopMatrix();
 	
@@ -297,10 +297,10 @@ void CChildView::drw_straightTrack() {
 void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset)
 {
 	GLdouble a[] = { x_offset, y_offset, z_offset + p_z };
-	GLdouble b[] = { x_offset, y_offset - p_y, z_offset + p_z };
+	GLdouble b[] = { x_offset + p_x / 2, y_offset - p_y, z_offset + p_z };
 	GLdouble d[] = { x_offset + p_x, y_offset, z_offset + p_z };
 	GLdouble e[] = { x_offset, y_offset, z_offset };
-	GLdouble f[] = { x_offset, y_offset - p_y, z_offset };
+	GLdouble f[] = { x_offset + p_x / 2, y_offset - p_y, z_offset };
 	GLdouble h[] = { x_offset + p_x, y_offset, z_offset };
 
 	// I'm going to mess with the colors a bit so
@@ -378,30 +378,33 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
 	//glRotated(14, 1, 0, 0);
 	//glRotated(0, 0, 1, 0);
 	//glTranslated(-24, 11.65, 6);
-
-	drw_carBody(360, 0, 1, 3, PINK);
+	glRotated(87, 0, 1, 0);
+	glRotated(14, 1, 0, 0);
+	drw_carBody(360, 0, 0.6, 2, PINK);
 	glPopMatrix();
 
 	// knife 1
 	glPushMatrix();
-	glTranslated(0.7,-1,1.5);
+	glRotated(87, 0, 1, 0);
+	glRotated(14, 1, 0, 0);
+	glTranslated(0.35, -0.6, 1);
+	Kinfe(.3, 0.6, 1.6, RED, -0.15, 0.3, -0.8);
 	//glRotated(-3, 0, 1, 0);
-	glRotated(-104, 0, 0, 1);
 	//glRotated(-90, 1, 0, 0);
 	//glRotated(0, 1, 0, 0);
 	//glTranslated(-11.15, -23.4, 6.2);
 	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -23.4 - p_z, 6.2 + p_x);
-	Kinfe(0.8, .2, 2.5, RED, -0.4, -0.1, -2.5/2);
 	glPopMatrix();
 
 	// knife 2
 	glPushMatrix();
-	glTranslated(-0.5, -1, 1.5);
+	glRotated(87, 0, 1, 0);
+	glRotated(14, 1, 0, 0);
+	glTranslated(-0.35, -0.6, 1);
+	Kinfe(.3, 0.6, 1.6, RED, -0.15, 0.3, -0.8);
 	//glRotated(-3, 0, 1, 0);
-	glRotated(-104, 0, 0, 1);
 	//glRotated(0, 1, 0, 0);
 	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -24.7 - p_z, 6.2 + p_x);
-	Kinfe(0.8, .2, 2.5, RED, -0.4, -0.1, -2.5/2);
 	glPopMatrix();
 }
 
