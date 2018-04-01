@@ -223,7 +223,7 @@ void CChildView::drw_straightTrack() {
 	float v = 10.0;
 	float length = 10.0; // Length of track
 
-	const double step2r = 2. * GR_PI / numSteps / 2;
+	const double step2r = 2. * GR_PI / n / 2;
 
 	double previous_x = r * cos(0);
 	double previous_y = r * sin(0);
