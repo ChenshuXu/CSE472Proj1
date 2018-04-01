@@ -39,7 +39,9 @@ public:
 	void SlideBase(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble * p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
 	void drw_straightTrack();
 	void Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
-	void drw_carBody(int n, int arg, float mult, float v);
+	void drw_carBody(int n, int arg, float mult, float v, const GLdouble *p_color);
+	void draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z);
+	void draw_track();
 	afx_msg void OnCameraFreecamera();
 	afx_msg void OnCameraAerialcamera();
 	afx_msg void OnCameraCamera1();
