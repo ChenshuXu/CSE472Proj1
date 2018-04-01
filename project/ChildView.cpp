@@ -100,13 +100,18 @@ void CChildView::OnGLDraw(CDC* pDC)
 	// 
 	// INSERT DRAWING CODE HERE
 	//
-
+	glPushMatrix();
 	draw_track();
+	glPopMatrix();
 
-	
+	glPushMatrix();
 	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
+	glPopMatrix();
 
+	glPushMatrix();
+	glTranslated(0, 0, 0);
 	draw_car(0., 0., 0.); // p_x , p_y, p_z to (0,0,0) Start Position
+	glPopMatrix();
 	
 }
 
@@ -223,7 +228,7 @@ void CChildView::drw_straightTrack() {
 	float v = 10.0;
 	float length = 10.0; // Length of track
 
-	const double step2r = 2. * GR_PI / numSteps / 2;
+	const double step2r = 2. * GR_PI / n / 2;
 
 	double previous_x = r * cos(0);
 	double previous_y = r * sin(0);
@@ -364,24 +369,33 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 
 void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
 	glPushMatrix();
+	//glTranslated(-24 - p_z, 11.65 + p_y, 6 + p_x);
+	
 	glRotated(87, 0, 1, 0);
-	glRotated(14, 1, 0, 0);
-	glTranslated(-24 - p_z, 11.65 + p_y, 6 + p_x);
+	//glRotated(14, 1, 0, 0);
+	glRotated(-m_changeX, 0, 1, 0);
+	glTranslated(-24, 11.65, 6);
+
 	drw_carBody(360, 0, 1, 3, PINK);
 	glPopMatrix();
 
 	glPushMatrix();
 	glRotated(-3, 0, 1, 0);
 	glRotated(-104, 0, 0, 1);
-	glRotated(-90, 1, 0, 0);
-	Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -23.4 - p_z, 6.2 + p_x);
+	//glRotated(-90, 1, 0, 0);
+	glRotated(m_changeX, 1, 0, 0);
+	glTranslated(-11.15, -23.4, 6.2);
+	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -23.4 - p_z, 6.2 + p_x);
+	Kinfe(0.8, .2, 2.5, RED, -0.4, -0.1, -2.5/2);
 	glPopMatrix();
 
 	glPushMatrix();
+	//glTranslated();
 	glRotated(-3, 0, 1, 0);
 	glRotated(-104, 0, 0, 1);
-	glRotated(-90, 1, 0, 0);
-	Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -24.7 - p_z, 6.2 + p_x);
+	glRotated(m_changeX, 1, 0, 0);
+	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -24.7 - p_z, 6.2 + p_x);
+	Kinfe(0.8, .2, 2.5, RED, -0.4, -0.1, -2.5/2);
 	glPopMatrix();
 }
 
