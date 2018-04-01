@@ -19,9 +19,6 @@ const double RED[] = { 1,0,0};
 CChildView::CChildView()
 {
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
-
-
-
 	m_ice.LoadFile(L"texture/color_bar.jpg");
 	m_snow.LoadFile(L"texture/snow.jpg");
 	m_trackCurve1.SetTexture(&m_ice);
@@ -112,7 +109,6 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotated(m_changeX, 0, 1, 0);
 	glTranslated(0, 0, 0);
 	draw_car(0., 0., 0.); // p_x , p_y, p_z to (0,0,0) Start Position
 	glPopMatrix();
@@ -387,8 +383,8 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
 
 	// knife 1
 	glPushMatrix();
-	glTranslated(0.7,-1,1.5);
-	//glRotated(-3, 0, 1, 0);
+	glTranslated(0.5,-1,1.5);
+	glRotated(-3, 0, 1, 0);
 	glRotated(-104, 0, 0, 1);
 	//glRotated(-90, 1, 0, 0);
 	//glRotated(0, 1, 0, 0);
@@ -400,7 +396,7 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
 	// knife 2
 	glPushMatrix();
 	glTranslated(-0.5, -1, 1.5);
-	//glRotated(-3, 0, 1, 0);
+	glRotated(-3, 0, 1, 0);
 	glRotated(-104, 0, 0, 1);
 	//glRotated(0, 1, 0, 0);
 	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -24.7 - p_z, 6.2 + p_x);
@@ -471,7 +467,7 @@ void CChildView::OnCameraAerialcamera()
 {
 	// TODO: Add your command handler code here
 	camNum = 1;
-	m_camera.Set(100, 100, 30, 10, -10, 30, 0, 0, 0);
+	m_camera.Set(40, 10, 50, 0, 0, 0, 0, 1, 0);
 	Invalidate();
 }
 
@@ -480,7 +476,7 @@ void CChildView::OnCameraCamera1()
 {
 	// TODO: Add your command handler code here
 	camNum = 2;
-	m_camera.Set(40, 20, 50, 12, 1, 0, 0, 1, 0);
+	m_camera.Set(40, 10, 50, 0, 0, 0, 0, 1, 0);
 	Invalidate();
 }
 
@@ -489,8 +485,6 @@ void CChildView::OnCameraCamera2()
 {
 	// TODO: Add your command handler code here
 	camNum = 3;
-	m_camera.Set(70, 20, -40, 20, 5, 11, 0, 1, 0);
-	Invalidate();
 }
 
 
