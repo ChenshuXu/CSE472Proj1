@@ -105,6 +105,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glPopMatrix();
 
 	glPushMatrix();
+	glTranslated(0., -0.15, 0.);
 	SlideBase(40., 10., 30., WHITE, 0., 0., 1.);
 	glPopMatrix();
 
