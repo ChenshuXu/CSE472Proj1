@@ -22,7 +22,7 @@ CChildView::CChildView()
 	m_camera.Set(80, 20, 60, 0, 0, 0, 0, 1, 0);
 	m_ice.LoadFile(L"texture/color_bar.jpg");
 	m_snow.LoadFile(L"texture/snow.jpg");
-	m_flag.LoadFile(L"texture/flag.png");
+	m_glass.LoadFile(L"texture/glass.jpg");
 	//m_test.LoadFile(L"texture/test.jpg");
 
 	m_trackCurve1.SetTexture(&m_ice);
@@ -328,7 +328,7 @@ void CChildView::Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble 
 void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble *p_color) {
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glBindTexture(GL_TEXTURE_2D, m_flag.TexName());
+	glBindTexture(GL_TEXTURE_2D, m_glass.TexName());
 	/*
 	+	Function drw_polygon:
 	+	Arguments:
@@ -360,6 +360,8 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
 		float a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * cos(a), mult * sin(a), v);
+		glTexCoord2d(0, 1);
+
 
 
 	}

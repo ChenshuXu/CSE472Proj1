@@ -61,7 +61,7 @@ private:
 	CTorus m_trackCurve2;
 	CGrTexture m_ice;
 	CGrTexture m_snow;
-	CGrTexture m_flag;
+	CGrTexture m_glass;
 	CGrTexture m_test;
 
 
