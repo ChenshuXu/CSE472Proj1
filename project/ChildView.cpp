@@ -119,7 +119,7 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glPushMatrix();
 	//glRotated(m_changeAngleY, 0, 1, 0);
 	glTranslated(7 + m_changeX, 9.4 - m_changeY, 24.35 + m_changeZ);
-	draw_car(0., 0., 0., m_changeAngleX, m_changeAngleY, 0.); // p_x , p_y, p_z to (0,0,0) Start Position r_x, r_y, r_z Rotation offset 
+	draw_car(0., 0., 0., m_changeAngleX, m_changeAngleY, m_changeAngleZ); // p_x , p_y, p_z to (0,0,0) Start Position r_x, r_y, r_z Rotation offset 
 	glPopMatrix();
 	
 }
@@ -404,6 +404,7 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x
 	//glTranslated(-24, 11.65, 6);
 	glRotated(87 + r_y, 0, 1, 0);
 	glRotated(14.04 + r_x, 1, 0, 0);
+	glRotated(r_z, 0, 0, 1);
 	drw_carBody(360, 0, 0.6, 1.5, PINK);
 	glPopMatrix();
 
@@ -411,6 +412,7 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x
 	glPushMatrix();
 	glRotated(87 + r_y, 0, 1, 0);
 	glRotated(14.04 + r_x, 1, 0, 0);
+	glRotated(r_z, 0, 0, 1);
 	glTranslated(0.35, -0.6, 0.8);
 	Kinfe(.3, 0.6, 1.2, RED, -0.15, 0.3, -0.6);
 	//glRotated(-3, 0, 1, 0);
@@ -424,6 +426,7 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x
 	glPushMatrix();
 	glRotated(87 + r_y, 0, 1, 0);
 	glRotated(14.04 + r_x, 1, 0, 0);
+	glRotated(r_z, 0, 0, 1);
 	glTranslated(-0.35, -0.6, 0.8);
 	Kinfe(.3, 0.6, 1.2, RED, -0.15, 0.3, -0.6);
 	//glRotated(-3, 0, 1, 0);
@@ -464,19 +467,19 @@ void CChildView::draw_track() {
 
 	// Straight track 2
 	glPushMatrix();
-	glRotated(-3, 0, 1, 0);
+	glRotated(-3.25, 0, 1, 0);
 	glRotated(-13.7, 0, 0, 1);
 	glRotated(180, 1, 0, 1);
-	glTranslated(24, -11.6, 6);
+	glTranslated(24, -11.6, 6.1);
 	drw_straightTrack();
 	glPopMatrix();
 
 	// Straight track 3
 	glPushMatrix();
-	glRotated(-3, 0, 1, 0);
+	glRotated(-3.25, 0, 1, 0);
 	glRotated(-13.7, 0, 0, 1);
 	glRotated(180, 1, 0, 1);
-	glTranslated(3.58, -11.31, 25.48);
+	glTranslated(3.58, -11.31, 25.45);
 	drw_straightTrack();
 	glPopMatrix();
 }
@@ -602,6 +605,7 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 		m_rotationY += m_rotationSpeed;
 		m_changeAngleY += m_rotationSpeed;
 		m_changeAngleX -= m_rotationSpeed * 14.04 / 93.;
+		m_changeAngleZ += m_rotationSpeed * 14.04 / 93.;
 
 		if (camNum == 4) {
 			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
@@ -621,6 +625,7 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 		if (camNum == 4) {
 			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
 			m_camera.Pan(-93.);
+			
 		}
 
 		m_speedZ = 0;
@@ -632,13 +637,13 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	else if(m_changeAngleY > 0.) {
 
 		m_changeAngleY -= m_rotationSpeed;
+		m_changeAngleX += m_rotationSpeed * 14.04 / 90.;
+		m_changeAngleZ += m_rotationSpeed * 14.04 / 93.;
 
 		if (camNum == 4) {
 			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
 			m_camera.Pan(-m_changeAngleY);
 		}
-
-		m_changeAngleX += m_rotationSpeed * 14.04 / 90.;
 
 		m_lineSpeed = m_lineSpeed - m_centripetalAccelation;
 		m_speedZ += m_centripetalAccelation;
@@ -682,6 +687,7 @@ void CChildView::OnAnimationReset()
 	m_rotationY = 0;
 	m_changeAngleY = 0;
 	m_changeAngleX = 0;
+	m_changeAngleZ = 0;
 	m_speedZ = 0;
 	m_changeZ = 0;
 }

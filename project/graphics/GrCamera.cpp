@@ -129,7 +129,7 @@ CGrCamera::CGrCamera()
     m_mouseButton = 0;              // Nothing currently pressed
     m_wheelSpeed = 0.01;            // Speed of the mouse wheel
     m_chordSpeed = 0.01;            // Speed of the mouse chord zoom
-    m_gravity = true;
+    m_gravity = false;
 	m_flip = true;
     m_zNearRange = 0.25f;
     m_zFarRange = 4;
