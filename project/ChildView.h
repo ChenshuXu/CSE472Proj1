@@ -40,7 +40,7 @@ public:
 	void drw_straightTrack();
 	void Kinfe(GLdouble p_x, GLdouble p_y, GLdouble p_z, const GLdouble *p_color, GLdouble x_offset, GLdouble y_offset, GLdouble z_offset);
 	void drw_carBody(int n, int arg, float mult, float v, const GLdouble *p_color);
-	void draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z);
+	void draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x, GLdouble r_y, GLdouble r_z);
 	void draw_track();
 	afx_msg void OnCameraFreecamera();
 	afx_msg void OnCameraAerialcamera();
@@ -75,7 +75,16 @@ private:
 	double m_changeAngleY = 0.;
 	double m_changeAngleZ = 0.;
 	double m_time = 0.;
+	double m_time1 = 0.;
+	double m_time2 = 0.;
 	double m_speed = 0.;
+	double m_lineSpeed = 0.;
+	double m_centripetalAccelation = 0.;
+	double m_speedZ = 0.;
+	double m_rotationSpeed = 0.;
+	double m_positionX = 0.;
+	double m_positionZ = 0.;
+	double m_rotationY = 0.;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -86,5 +95,6 @@ public:
 
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnAnimationStart();
+	afx_msg void OnAnimationReset();
 };
 

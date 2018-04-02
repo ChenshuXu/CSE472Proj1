@@ -13,6 +13,7 @@ const double GR_PI = 3.1415926535897932384626433832795;
 const double WHITE[] = { 1,1,1 };
 const double PINK[] = { 1,0.9,0.9 };
 const double RED[] = { 1,0,0};
+const double acceleration = 9.8 * sin(14.04 * GR_PI / 180) / 1000;
 
 // CChildView
 
@@ -26,6 +27,7 @@ CChildView::CChildView()
 
 	m_trackCurve1.SetTexture(&m_ice);
 	m_trackCurve2.SetTexture(&m_ice);
+
 }
 
 CChildView::~CChildView()
@@ -45,6 +47,7 @@ BEGIN_MESSAGE_MAP(CChildView, COpenGLWnd)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_TIMER()
 	ON_COMMAND(ID_ANIMATION_START, &CChildView::OnAnimationStart)
+	ON_COMMAND(ID_ANIMATION_RESET, &CChildView::OnAnimationReset)
 END_MESSAGE_MAP()
 
 
@@ -110,9 +113,9 @@ void CChildView::OnGLDraw(CDC* pDC)
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotated(0, 0, 1, 0);
+	//glRotated(m_changeAngleY, 0, 1, 0);
 	glTranslated(7 + m_changeX, 9.4 - m_changeY, 24.35 + m_changeZ);
-	draw_car(0., 0., 0.); // p_x , p_y, p_z to (0,0,0) Start Position
+	draw_car(0., 0., 0., m_changeAngleX, m_changeAngleY, 0.); // p_x , p_y, p_z to (0,0,0) Start Position r_x, r_y, r_z Rotation offset 
 	glPopMatrix();
 	
 }
@@ -382,7 +385,7 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 
 }
 
-void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
+void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x, GLdouble r_y, GLdouble r_z) {
 	
 	
 	// cylinder
@@ -392,17 +395,17 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
 	//glRotated(14, 1, 0, 0);
 	//glRotated(0, 0, 1, 0);
 	//glTranslated(-24, 11.65, 6);
-	glRotated(87, 0, 1, 0);
-	glRotated(14, 1, 0, 0);
-	drw_carBody(360, 0, 0.6, 2, PINK);
+	glRotated(87 + r_y, 0, 1, 0);
+	glRotated(14.04 + r_x, 1, 0, 0);
+	drw_carBody(360, 0, 0.6, 1.5, PINK);
 	glPopMatrix();
 
 	// knife 1
 	glPushMatrix();
-	glRotated(87, 0, 1, 0);
-	glRotated(14, 1, 0, 0);
-	glTranslated(0.35, -0.6, 1);
-	Kinfe(.3, 0.6, 1.6, RED, -0.15, 0.3, -0.8);
+	glRotated(87 + r_y, 0, 1, 0);
+	glRotated(14.04 + r_x, 1, 0, 0);
+	glTranslated(0.35, -0.6, 0.8);
+	Kinfe(.3, 0.6, 1.2, RED, -0.15, 0.3, -0.6);
 	//glRotated(-3, 0, 1, 0);
 	//glRotated(-90, 1, 0, 0);
 	//glRotated(0, 1, 0, 0);
@@ -412,10 +415,10 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z) {
 
 	// knife 2
 	glPushMatrix();
-	glRotated(87, 0, 1, 0);
-	glRotated(14, 1, 0, 0);
-	glTranslated(-0.35, -0.6, 1);
-	Kinfe(.3, 0.6, 1.6, RED, -0.15, 0.3, -0.8);
+	glRotated(87 + r_y, 0, 1, 0);
+	glRotated(14.04 + r_x, 1, 0, 0);
+	glTranslated(-0.35, -0.6, 0.8);
+	Kinfe(.3, 0.6, 1.2, RED, -0.15, 0.3, -0.6);
 	//glRotated(-3, 0, 1, 0);
 	//glRotated(0, 1, 0, 0);
 	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -24.7 - p_z, 6.2 + p_x);
@@ -429,7 +432,7 @@ void CChildView::draw_track() {
 	glPushMatrix();
 	glRotated(180, 1, 0, 0);
 	glRotated(0, 0, 1, 0);
-	glRotated(14, 0, 0, 1);
+	glRotated(14.04, 0, 0, 1);
 	glTranslated(15, -11.4, -20);
 	m_trackCurve1.Draw();
 	glPopMatrix();
@@ -438,7 +441,7 @@ void CChildView::draw_track() {
 	glPushMatrix();
 	glRotated(180, 1, 0, 0);
 	glRotated(180, 0, 1, 0);
-	glRotated(-14, 0, 0, 1);
+	glRotated(-14.04, 0, 0, 1);
 	glTranslated(-24.88, -11.36, 10);
 	m_trackCurve2.Draw();
 	glPopMatrix();
@@ -546,23 +549,6 @@ void CChildView::OnRButtonDown(UINT nFlags, CPoint point)
 }
 
 
-void CChildView::OnTimer(UINT_PTR nIDEvent)
-{
-	// TODO: Add your message handler code here and/or call default
-	m_changeAngleX += 0.2;
-	Invalidate();
-
-	m_time += 1. / 1000;
-	m_speed = 9.8 * m_time / 2.;
-
-	m_changeX += (m_speed);
-	m_changeY += (m_speed * tan(14. * GR_PI / 180));
-	m_changeZ += (m_speed * tan(3. * GR_PI / 180));
-
-	COpenGLWnd::OnTimer(nIDEvent);
-}
-
-
 void CChildView::OnAnimationStart()
 {
 	// TODO: Add your command handler code here
@@ -577,4 +563,89 @@ void CChildView::OnAnimationStart()
 		KillTimer(m_AnimTime);
 		m_AnimTime = 0;
 	}
+}
+
+void CChildView::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: Add your message handler code here and/or call default
+	Invalidate();
+
+	m_time += 1.;
+	m_positionX = acceleration * m_time * m_time / 2.;
+	
+	
+	if (m_positionX < (12 * cos(14.04 * GR_PI / 180))) {
+		m_speed += acceleration;
+		m_changeX += (m_speed);
+		m_changeY += (m_speed * tan(14.04 * GR_PI / 180));
+		m_changeZ += (m_speed * tan(3. * GR_PI / 180));
+		m_lineSpeed = m_speed;
+	}
+	else if (m_rotationY < 93.){
+		m_rotationSpeed = m_speed * 180 / (3.5 * GR_PI);
+
+		m_rotationY += m_rotationSpeed;
+
+		m_changeAngleY += m_rotationSpeed;
+		m_changeAngleX -= m_rotationSpeed * 14.04 / 93.;
+
+		m_centripetalAccelation = m_lineSpeed * m_lineSpeed / 3.5;
+		m_lineSpeed = m_lineSpeed - m_centripetalAccelation;
+		m_speedZ += m_centripetalAccelation;
+		
+		m_changeX += (m_lineSpeed);
+		m_changeY += (m_lineSpeed * tan(14.04 * GR_PI / 180) );
+		m_changeZ -= (m_speed * tan(3. * GR_PI / 180) + m_speedZ);
+	}
+	else if (m_positionZ < 12) {
+		m_speedZ = 0;
+		m_time1 += 1.;
+		m_positionZ = m_speed * m_time1;
+		m_changeZ -= (m_speed);
+		m_lineSpeed = m_speed;
+	}
+	else if(m_changeAngleY > 0.) {
+
+		m_changeAngleY -= m_rotationSpeed;
+		m_changeAngleX += m_rotationSpeed * 14.04 / 90.;
+
+		m_lineSpeed = m_lineSpeed - m_centripetalAccelation;
+		m_speedZ += m_centripetalAccelation;
+
+		m_changeX += (m_speed * tan(3. * GR_PI / 180) + m_speedZ * 4);
+		m_changeY += (m_speedZ * tan(14.04 * GR_PI / 180) * 4.);
+		m_changeZ -= (m_lineSpeed);
+	}
+	else if (m_time2 < ( - m_speed + sqrt( m_speed * m_speed + 2 * acceleration * (14 * cos(14.04 * GR_PI / 180)))) / acceleration){
+		m_time2 += 1.;
+		m_speed += acceleration;
+		m_changeX += (m_speed);
+		m_changeY += (m_speed * tan(14.04 * GR_PI / 180));
+		m_changeZ += (m_speed * tan(3. * GR_PI / 180));
+	}
+	
+
+	COpenGLWnd::OnTimer(nIDEvent);
+}
+
+
+void CChildView::OnAnimationReset()
+{
+	m_time = 0.;
+	m_time1 = 0.;
+	m_time2 = 0.;
+	m_changeX = 0;
+	m_changeY = 0;
+	m_changeZ = 0;
+	m_speed = 0;
+	m_rotationSpeed = 0;
+	m_lineSpeed = 0;
+	m_centripetalAccelation = 0;
+	m_positionX = 0;
+	m_positionZ = 0;
+	m_rotationY = 0;
+	m_changeAngleY = 0;
+	m_changeAngleX = 0;
+	m_speedZ = 0;
+	m_changeZ = 0;
 }
