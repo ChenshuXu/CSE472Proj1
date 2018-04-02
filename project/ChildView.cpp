@@ -23,7 +23,6 @@ CChildView::CChildView()
 	m_ice.LoadFile(L"texture/color_bar.jpg");
 	m_snow.LoadFile(L"texture/snow.jpg");
 	m_glass.LoadFile(L"texture/glass.jpg");
-	//m_test.LoadFile(L"texture/test.jpg");
 
 	m_trackCurve1.SetTexture(&m_ice);
 	m_trackCurve2.SetTexture(&m_ice);
@@ -143,19 +142,6 @@ inline void Quad(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4)
 	glEnd();
 }
 
-//inline void QuadTrack(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4, double step2r, double a2a, double a2b)
-//{
-//	glBegin(GL_QUADS);
-//	glTexCoord2d(a2a / GR_PI, 0. / GR_PI / step2r);
-//	glVertex3dv(v1);
-//	glTexCoord2d(a2a / GR_PI, 1. / GR_PI / step2r);
-//	glVertex3dv(v2);
-//	glTexCoord2d(a2b / GR_PI, 1. / GR_PI / step2r);
-//	glVertex3dv(v3);
-//	glTexCoord2d(a2b / GR_PI, 0. / GR_PI / step2r);
-//	glVertex3dv(v4);
-//	glEnd();
-//}
 
 inline void QuadTrack(GLdouble *v1, GLdouble *v2, GLdouble *v3, GLdouble *v4) {
 	glBegin(GL_QUADS);
@@ -231,7 +217,7 @@ void CChildView::drw_straightTrack() {
 	*/
 	int n = 50; // number of steps
 	float r = 1.5; // radius of inner half circle
-	float r2 = 1.8; // radius of outer half circle
+	double r2 = 1.8; // radius of outer half circle
 	int arg = 0; // start angle
 	float mult = 1.5;
 	float v = 10.0;
@@ -248,7 +234,7 @@ void CChildView::drw_straightTrack() {
 	double coord = 0;
 
 	for (int i = arg; i <= arg + 180;i += (180 / n)) {
-		float rad = i * GR_PI / 180; // degrees to radians
+		double rad = i * GR_PI / 180; // degrees to radians
 
 		GLdouble a[] = { previous_x, previous_y, 0 };
 		GLdouble b[] = { previous_x, previous_y, length };
@@ -259,9 +245,6 @@ void CChildView::drw_straightTrack() {
 		glTexCoord2d(coord , 0);
 		QuadTrack(a, b, c, d);
 		QuadTrack(a, d, c, b);
-		//QuadTrack(a, b, c, d, rad, coord, i);
-		//QuadTrack(a, d, c, b, rad, coord, i);
-
 
 		previous_x = r * cos(rad);
 		previous_y = r * sin(rad);
@@ -278,7 +261,7 @@ void CChildView::drw_straightTrack() {
 	coord = 0;
 
 	for (int i = arg; i <= arg + 180; i += (180 / n)) {
-		float rad = i * GR_PI / 180; // degrees to radians
+		double rad = i * GR_PI / 180; // degrees to radians
 
 		GLdouble a[] = { previous_x, previous_y, 0 };
 		GLdouble b[] = { previous_x, previous_y, length };
@@ -289,8 +272,6 @@ void CChildView::drw_straightTrack() {
 		glTexCoord2d(coord, 0);
 		QuadTrack(a, b, c, d);
 		QuadTrack(a, d, c, b);
-		//QuadTrack(a, b, c, d, rad, coord, i);
-		//QuadTrack(a, d, c, b, rad, coord, i);
 
 
 		previous_x = r2 * cos(rad);
@@ -352,7 +333,7 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 	glBegin(GL_POLYGON);
 	//glColor3d(p_color[0], p_color[1], p_color[2]);
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
-		float a = i * GR_PI / 180; // degrees to radians
+		double a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * sin(a), mult * cos(a), 0.0);
 		glTexCoord2d(0,0);
 
@@ -364,7 +345,7 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 	glBegin(GL_POLYGON);
 	//glColor4f(0.0, 0.0, 1.0, 1.0);
 	for (int i = arg; i <= (360 + arg); i += (360 / n)) {
-		float a = i * GR_PI / 180; // degrees to radians
+		double a = i * GR_PI / 180; // degrees to radians
 		glVertex3f(mult * cos(a), mult * sin(a), v);
 		glTexCoord2d(0, 1);
 
@@ -377,7 +358,7 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 	glBegin(GL_QUAD_STRIP);
 	//glColor4f(1.0, 1.0, 0.0, 1.0);
 	for (int i = arg; i < 480; i += (360 / n)) {
-		float a = i * GR_PI / 180; // degrees to radians
+		double a = i * GR_PI / 180; // degrees to radians
 		glTexCoord2d(0, 0);
 
 		glVertex3f(mult * cos(a), mult * sin(a), v);
@@ -397,11 +378,6 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x
 	
 	// cylinder
 	glPushMatrix();
-	//glTranslated(-24 - p_z, 11.65 + p_y, 6 + p_x);
-	//glRotated(87, 0, 1, 0);
-	//glRotated(14, 1, 0, 0);
-	//glRotated(0, 0, 1, 0);
-	//glTranslated(-24, 11.65, 6);
 	glRotated(87 + r_y, 0, 1, 0);
 	glRotated(14.04 + r_x, 1, 0, 0);
 	glRotated(r_z, 0, 0, 1);
@@ -415,11 +391,6 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x
 	glRotated(r_z, 0, 0, 1);
 	glTranslated(0.35, -0.6, 0.8);
 	Kinfe(.3, 0.6, 1.2, RED, -0.15, 0.3, -0.6);
-	//glRotated(-3, 0, 1, 0);
-	//glRotated(-90, 1, 0, 0);
-	//glRotated(0, 1, 0, 0);
-	//glTranslated(-11.15, -23.4, 6.2);
-	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -23.4 - p_z, 6.2 + p_x);
 	glPopMatrix();
 
 	// knife 2
@@ -429,9 +400,6 @@ void CChildView::draw_car(GLdouble p_x, GLdouble p_y, GLdouble p_z, GLdouble r_x
 	glRotated(r_z, 0, 0, 1);
 	glTranslated(-0.35, -0.6, 0.8);
 	Kinfe(.3, 0.6, 1.2, RED, -0.15, 0.3, -0.6);
-	//glRotated(-3, 0, 1, 0);
-	//glRotated(0, 1, 0, 0);
-	//Kinfe(0.8, .2, 2.5, RED, -11.15 - p_y, -24.7 - p_z, 6.2 + p_x);
 	glPopMatrix();
 }
 
