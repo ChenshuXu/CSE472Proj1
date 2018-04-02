@@ -133,7 +133,7 @@ BEGIN
     END
     POPUP "Animation"
     BEGIN
-        MENUITEM "&Start",                      ID_ANIMATION_START
+        MENUITEM "&Start/Pause",                ID_ANIMATION_START
         MENUITEM "&Reset",                      ID_ANIMATION_RESET
     END
 END

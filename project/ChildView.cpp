@@ -349,8 +349,6 @@ void CChildView::drw_carBody(int n, int arg, float mult, float v, const GLdouble
 		glVertex3f(mult * cos(a), mult * sin(a), v);
 		glTexCoord2d(0, 1);
 
-
-
 	}
 	glEnd();
 
@@ -466,7 +464,7 @@ void CChildView::OnCameraAerialcamera()
 {
 	// TODO: Add your command handler code here
 	camNum = 1;
-	m_camera.Set(100, 100, 30, 10, -10, 30, 0, 0, 0);
+	m_camera.Set(100., 100, 30, 10, -10, 30, 0, 0, 0);
 	Invalidate();
 }
 
@@ -494,7 +492,7 @@ void CChildView::OnCameraBobsledcamera()
 	// TODO: Add your command handler code here
 	
 	camNum = 4;
-	m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
+	m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 3, m_bobsledcameraZ, 0, 1, 0);
 	Invalidate();
 }
 
@@ -558,7 +556,7 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	if (m_positionX < (12 * cos(14.04 * GR_PI / 180))) {
 
 		if (camNum == 4) {
-			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
+			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 3, m_bobsledcameraZ, 0, 1, 0);
 		}
 
 		m_speed += acceleration;
@@ -573,10 +571,10 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 		m_rotationY += m_rotationSpeed;
 		m_changeAngleY += m_rotationSpeed;
 		m_changeAngleX -= m_rotationSpeed * 14.04 / 93.;
-		m_changeAngleZ += m_rotationSpeed * 14.04 / 93.;
+		m_changeAngleZ -= m_rotationSpeed * 14.04 / 93.;
 
 		if (camNum == 4) {
-			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
+			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 3, m_bobsledcameraZ, 0, 1, 0);
 			m_camera.Pan(-m_changeAngleY);
 		}
 
@@ -591,8 +589,8 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	else if (m_positionZ < 12) {
 
 		if (camNum == 4) {
-			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
-			m_camera.Pan(-93.);
+			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 3, m_bobsledcameraZ, 0, 1, 0);
+			m_camera.Pan(-90.);
 			
 		}
 
@@ -606,10 +604,10 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 
 		m_changeAngleY -= m_rotationSpeed;
 		m_changeAngleX += m_rotationSpeed * 14.04 / 90.;
-		m_changeAngleZ += m_rotationSpeed * 14.04 / 93.;
+		m_changeAngleZ += 3 * m_rotationSpeed * 14.04 / 93.;
 
 		if (camNum == 4) {
-			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
+			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 3, m_bobsledcameraZ, 0, 1, 0);
 			m_camera.Pan(-m_changeAngleY);
 		}
 
@@ -623,7 +621,7 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	else if (m_time2 < ( - m_speed + sqrt( m_speed * m_speed + 2 * acceleration * (13.5 * cos(14.04 * GR_PI / 180)))) / acceleration){
 
 		if (camNum == 4) {
-			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 2, m_bobsledcameraZ, 0, 1, 0);
+			m_camera.Set(m_bobsledcameraX, m_bobsledcameraY, m_bobsledcameraZ, m_bobsledcameraX + 5, m_bobsledcameraY - 3, m_bobsledcameraZ, 0, 1, 0);
 		}
 
 		m_time2 += 1.;

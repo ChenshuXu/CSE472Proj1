@@ -1,2 +1,19 @@
 Team member: Tiezheng, Shao Hongyu, Yan Chengshu, Xu
-Excellence points: 1. two textures, 2. Simple physical dynamics
+
+What we used:
+
+1. We modify the Tours file to build the curve track, which is the 1/4 of the real tour and 1/2 of the circle.
+2. We write our own function to build the stright track.
+3. We build a cylinder for the bobsled body and two triangular prism as the steel blades which under the cylinder.
+4. We set a camera on the top of the bobsled and look forward.
+5. We have a menu button for reset the bobsled position.
+
+
+Excellence points: 
+
+1. Three textures:
+The first texture is the big slope under the track. We made it looks like snow. The second texture is the track. The third texture is the bobsled body, which looks like a glass.
+
+2. Simple physical dynamics: 
+We used accelation to speed up the bobsled when sliding down the track. The accalation is 1/500 of real gravity. Makes it more like a real bobaeled.
+When the bobsled pass the curve track, it will has a little bit tilt.
