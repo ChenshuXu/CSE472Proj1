@@ -86,6 +86,10 @@ private:
 	double m_positionZ = 0.;
 	double m_rotationY = 0.;
 
+	double m_bobsledcameraX = 0.;
+	double m_bobsledcameraY = 0.;
+	double m_bobsledcameraZ = 0.;
+
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
